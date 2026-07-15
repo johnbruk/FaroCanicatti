@@ -3,171 +3,217 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0b3d4a" />
-    <meta name="description" content="Il Faro di Canicattì: centro segnalazioni per la cura della città." />
-    <title>Segnalazioni per la cura della città | Il Faro di Canicattì</title>
+    <meta name="theme-color" content="#d31018" />
+    <meta name="description" content="Il Faro di Canicattì: web app civica ispirata all'identità Controcorrente per raccogliere segnalazioni cittadine." />
+    <title>Il Faro di Canicattì | Controcorrente</title>
     <style>
 :root {
-  --blue: #0b3d4a;
-  --blue-dark: #082f39;
-  --teal: #12606f;
-  --yellow: #f5b301;
-  --page: #f3f5f6;
-  --text: #17323a;
-  --muted: #5c7077;
-  --border: #d6e0e3;
+  --red: #d31018;
+  --red-dark: #97070d;
+  --yellow: #ffc400;
+  --orange: #f26a00;
+  --ink: #0b0b0f;
+  --paper: #fffaf0;
+  --muted: #6d5b4d;
+  --line: rgba(11, 11, 15, .12);
   --white: #fff;
   font-family: Arial, Helvetica, sans-serif;
-  color: var(--text);
-  background: var(--page);
+  color: var(--ink);
+  background: var(--ink);
 }
 * { box-sizing: border-box; }
-body { margin: 0; min-width: 320px; }
-a { color: inherit; }
-.access-strip { background: var(--blue-dark); color: var(--white); font-size: .95rem; }
-.access-strip a { display: block; max-width: 1180px; margin: 0 auto; padding: .7rem 1rem; text-align: right; font-weight: 700; }
-.site-header { background: var(--white); border-bottom: 1px solid var(--border); }
-.header-inner, .page-shell, .footer-inner { max-width: 1180px; margin: 0 auto; }
-.header-inner { display: flex; justify-content: space-between; align-items: center; min-height: 92px; padding: 0 1rem; }
-.brand { display: inline-flex; gap: .85rem; align-items: center; text-decoration: none; color: var(--blue); }
-.brand img { width: 58px; height: 58px; border-radius: 14px; }
-.brand strong { display: block; font-size: 1.35rem; letter-spacing: -.02em; }
-.brand small { display: block; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
-.menu-button { background: var(--blue); color: var(--white); border: 0; border-radius: 4px; font-size: 1.5rem; padding: .65rem .9rem; }
-.page-shell { padding: 1.4rem 1rem 3.5rem; background: var(--white); min-height: 70vh; }
-.breadcrumb { display: flex; gap: .55rem; align-items: center; color: var(--muted); font-size: .95rem; margin: .6rem 0 2.4rem; }
-.breadcrumb a { color: var(--teal); font-weight: 700; }
-.intro { max-width: 880px; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
-.section-label { color: var(--teal); font-size: .95rem; font-weight: 800; margin: 0 0 .7rem; text-transform: uppercase; letter-spacing: .04em; }
-h1 { font-size: clamp(2.25rem, 5vw, 4rem); line-height: 1.05; margin: 0 0 1.2rem; color: #111; font-weight: 800; }
-h2 { font-size: clamp(1.7rem, 3vw, 2.5rem); margin: 0 0 1rem; color: #111; }
-.lead { font-size: 1.35rem; line-height: 1.45; margin: 0; color: #263f46; }
-.choose-section { padding: 2.4rem 0; }
-.notice { border-left: 6px solid var(--yellow); background: #fff8df; padding: 1.1rem 1.25rem; max-width: 980px; margin-bottom: 1.6rem; }
-.notice p { margin: .35rem 0 0; line-height: 1.55; }
-.category-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; }
-.category-card { min-height: 132px; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; text-align: left; border: 1px solid var(--border); border-radius: 2px; background: var(--white); color: var(--blue); padding: 1.2rem; cursor: pointer; box-shadow: 0 2px 0 rgba(8,47,57,.08); font-size: 1.1rem; font-weight: 800; }
-.category-card:hover, .category-card:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(18,96,111,.16); outline: 0; }
-.category-card-dark { background: var(--blue); color: var(--white); }
-.category-icon { font-size: 2.25rem; }
-.form-panel, .admin-panel { border-top: 12px solid var(--blue); background: #f8fafb; padding: 2rem; margin: 1.8rem 0; }
-.panel-heading { max-width: 780px; }
-.report-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.5rem; }
-label { display: grid; gap: .45rem; font-weight: 800; color: #172e35; }
-input, select, textarea { border: 1px solid #b8c8cd; border-radius: 0; padding: .9rem; font: inherit; background: var(--white); }
-textarea { min-height: 128px; resize: vertical; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; background: var(--paper); }
+a { color: inherit; text-decoration: none; }
+.cc-header { position: sticky; top: 0; z-index: 20; display: grid; grid-template-columns: auto auto 1fr; gap: 1rem; align-items: center; min-height: 84px; padding: .8rem clamp(1rem, 4vw, 3rem); background: rgba(11, 11, 15, .96); color: var(--white); border-bottom: 5px solid var(--yellow); }
+.cc-brand { display: inline-flex; gap: .8rem; align-items: center; }
+.cc-brand img { width: 58px; height: 58px; border-radius: 18px; }
+.cc-brand strong { display: block; font-family: Impact, Arial Black, sans-serif; font-size: 1.55rem; line-height: .9; text-transform: uppercase; letter-spacing: .04em; }
+.cc-brand small { color: var(--yellow); display: block; font-weight: 900; text-transform: uppercase; font-size: .72rem; letter-spacing: .08em; }
+.cc-menu { display: none; border: 2px solid var(--yellow); background: transparent; color: var(--yellow); border-radius: 14px; padding: .55rem .75rem; font-size: 1.35rem; }
+.cc-nav { justify-self: end; display: flex; gap: .4rem; align-items: center; font-weight: 900; text-transform: uppercase; font-size: .82rem; }
+.cc-nav a { padding: .75rem .9rem; border-radius: 999px; }
+.cc-nav a:hover { background: rgba(255,255,255,.12); }
+.nav-cta { background: var(--yellow); color: var(--ink); box-shadow: 0 8px 0 var(--orange); }
+.hero { position: relative; overflow: hidden; min-height: calc(100svh - 84px); display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 2rem; align-items: center; padding: clamp(2rem, 6vw, 5rem); color: var(--white); background: radial-gradient(circle at 78% 12%, rgba(255,196,0,.28), transparent 24%), linear-gradient(145deg, var(--red) 0 42%, var(--ink) 42% 100%); }
+.hero::after { content: ''; position: absolute; left: -8%; right: -8%; bottom: -88px; height: 220px; background: radial-gradient(90% 100% at 18% 30%, transparent 0 34%, var(--orange) 35% 44%, transparent 45%), radial-gradient(80% 90% at 40% 28%, transparent 0 38%, var(--yellow) 39% 50%, transparent 51%); opacity: .95; }
+.hero-copy { position: relative; z-index: 1; max-width: 820px; }
+.kicker { color: var(--yellow); font-weight: 1000; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 .8rem; }
+h1, h2 { font-family: Impact, Arial Black, sans-serif; text-transform: uppercase; letter-spacing: .02em; line-height: .92; margin: 0 0 1rem; }
+h1 { font-size: clamp(3rem, 10vw, 7.5rem); max-width: 900px; }
+h2 { font-size: clamp(2.1rem, 6vw, 4.8rem); }
+.hero p:not(.kicker) { font-size: clamp(1.05rem, 2vw, 1.35rem); max-width: 720px; line-height: 1.55; }
+.hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.6rem; }
+.button { border: 0; border-radius: 999px; cursor: pointer; display: inline-flex; justify-content: center; align-items: center; min-height: 52px; padding: .95rem 1.35rem; font-weight: 1000; text-transform: uppercase; letter-spacing: .04em; }
+.button-primary { background: var(--yellow); color: var(--ink); box-shadow: 0 9px 0 var(--orange); }
+.button-ghost { border: 2px solid var(--yellow); color: var(--yellow); background: transparent; }
+.hero-badge { position: relative; z-index: 1; aspect-ratio: 1; border-radius: 50%; background: linear-gradient(165deg, var(--red) 0 55%, var(--white) 55% 100%); display: grid; place-content: center; padding: 2rem; color: var(--white); transform: rotate(-4deg); box-shadow: 0 30px 80px rgba(0,0,0,.38); }
+.hero-badge span, .hero-badge strong { font-family: Impact, Arial Black, sans-serif; font-size: clamp(2.5rem, 5vw, 4.2rem); line-height: .82; text-transform: uppercase; }
+.hero-badge strong { color: var(--yellow); transform: scaleX(-1); }
+.hero-badge em { color: var(--ink); font-weight: 1000; margin-top: 2rem; text-transform: uppercase; }
+.section { padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem); }
+.manifesto { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: 2rem; align-items: end; background: var(--paper); border-bottom: 8px solid var(--ink); }
+.manifesto p:last-child { font-size: 1.12rem; line-height: 1.7; color: #2a211b; }
+.categories { background: var(--ink); color: var(--white); }
+.section-heading { max-width: 860px; margin-bottom: 1.5rem; }
+.section-heading p:not(.kicker) { color: inherit; line-height: 1.6; font-size: 1.08rem; }
+.category-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.category-card { min-height: 178px; border: 2px solid rgba(255,255,255,.16); background: #17171d; color: var(--white); padding: 1.2rem; text-align: left; cursor: pointer; display: flex; flex-direction: column; justify-content: space-between; border-radius: 24px; box-shadow: inset 0 -6px 0 rgba(255,196,0,.12); }
+.category-card:hover, .category-card:focus { outline: 3px solid var(--yellow); transform: translateY(-3px); }
+.category-card span { font-size: 2.1rem; }
+.category-card strong { font-size: 1.15rem; text-transform: uppercase; }
+.category-card small { color: #ffe38a; line-height: 1.35; }
+.category-card.highlight { background: linear-gradient(145deg, var(--red), var(--orange)); }
+.report-panel { background: linear-gradient(180deg, var(--paper), #fff); }
+.report-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+label { display: grid; gap: .45rem; font-weight: 1000; text-transform: uppercase; font-size: .82rem; letter-spacing: .04em; }
+input, select, textarea { border: 2px solid var(--ink); border-radius: 18px; padding: 1rem; font: inherit; background: var(--white); color: var(--ink); }
+textarea { min-height: 138px; resize: vertical; }
 .wide { grid-column: 1 / -1; }
-.primary-action { border: 0; background: var(--blue); color: var(--white); padding: 1rem 1.4rem; font-weight: 800; font-size: 1rem; cursor: pointer; }
-.form-message { color: var(--teal); font-weight: 800; }
-.admin-tools { display: grid; grid-template-columns: 1fr 1fr 120px; gap: 1rem; align-items: end; margin-top: 1rem; }
-.counter { background: var(--blue); color: var(--white); padding: .75rem; text-align: center; }
-.counter span { display: block; font-size: 1.8rem; font-weight: 900; }
-.counter small { text-transform: uppercase; letter-spacing: .08em; }
-.reports-list { display: grid; gap: 1rem; margin-top: 1.5rem; }
-.report-card { display: grid; grid-template-columns: 1fr 230px; gap: 1rem; border: 1px solid var(--border); background: var(--white); padding: 1.25rem; }
-.code { color: var(--teal); font-weight: 900; }
-.report-card h3 { margin: .4rem 0; font-size: 1.35rem; }
-dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem 1rem; }
-dt { color: var(--muted); font-size: .75rem; font-weight: 900; text-transform: uppercase; }
+.form-message { color: var(--red); font-weight: 1000; }
+.admin-panel { background: var(--red); color: var(--white); }
+.admin-tools { display: grid; grid-template-columns: 1fr 1fr 130px; gap: 1rem; align-items: end; margin-bottom: 1.5rem; }
+.admin-tools input, .admin-tools select, .admin-panel select { border-color: var(--yellow); }
+.counter { background: var(--yellow); color: var(--ink); border-radius: 22px; padding: .9rem; text-align: center; box-shadow: 0 8px 0 var(--orange); }
+.counter span { display: block; font-family: Impact, Arial Black, sans-serif; font-size: 2rem; }
+.counter small { font-weight: 1000; text-transform: uppercase; }
+.reports-list { display: grid; gap: 1rem; }
+.report-card { display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: 1rem; background: var(--white); color: var(--ink); border-radius: 26px; padding: 1.2rem; border: 3px solid var(--ink); }
+.code { color: var(--red); font-weight: 1000; }
+.report-card h3 { margin: .35rem 0; text-transform: uppercase; }
+dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem 1rem; }
+dt { color: var(--muted); font-size: .75rem; font-weight: 1000; text-transform: uppercase; }
 dd { margin: 0; }
-.report-actions { display: flex; flex-direction: column; gap: .7rem; }
-.badge { background: var(--teal); color: var(--white); padding: .45rem .7rem; font-weight: 900; width: fit-content; }
-.badge.in-lavorazione { background: #9a5b00; }
-.badge.risolta { background: #216e37; }
-.secondary-action { border: 1px solid var(--blue); background: var(--white); color: var(--blue); padding: .8rem; font-weight: 800; cursor: pointer; }
-.empty-state { border: 1px dashed var(--border); padding: 1.25rem; background: var(--white); }
-.ai-note { color: var(--muted); border-top: 1px solid var(--border); padding-top: 1.2rem; }
-.site-footer { background: var(--blue-dark); color: var(--white); }
-.footer-inner { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem; align-items: center; padding: 2rem 1rem; }
-.footer-brand { color: var(--white); }
-.footer-brand small { color: #d6e0e3; }
-address { font-style: normal; line-height: 1.5; }
-.site-footer nav { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: flex-end; }
-@media (max-width: 780px) {
-  .access-strip a { text-align: left; }
-  .category-grid, .report-form, .admin-tools, .report-card, .footer-inner { grid-template-columns: 1fr; }
+.report-actions { display: flex; flex-direction: column; gap: .75rem; }
+.badge { background: var(--red); color: var(--white); padding: .45rem .7rem; border-radius: 999px; font-weight: 1000; width: fit-content; }
+.badge.in-lavorazione { background: var(--orange); color: var(--ink); }
+.badge.risolta { background: #116b2e; }
+.secondary-action { border: 2px solid var(--ink); background: var(--yellow); color: var(--ink); border-radius: 16px; padding: .85rem; font-weight: 1000; cursor: pointer; }
+.empty-state { border: 2px dashed rgba(255,255,255,.6); padding: 1rem; border-radius: 18px; }
+.mobile-tabbar { display: none; position: fixed; left: .75rem; right: .75rem; bottom: .75rem; z-index: 30; background: var(--ink); color: var(--white); border: 2px solid var(--yellow); border-radius: 999px; padding: .35rem; box-shadow: 0 14px 36px rgba(0,0,0,.28); }
+.mobile-tabbar a { flex: 1; text-align: center; padding: .8rem .4rem; border-radius: 999px; font-weight: 1000; text-transform: uppercase; font-size: .78rem; }
+.mobile-tabbar a:nth-child(2) { background: var(--yellow); color: var(--ink); }
+.footer { display: flex; justify-content: space-between; gap: 1rem; padding: 2rem clamp(1rem, 4vw, 3rem) 6rem; background: var(--ink); color: var(--white); }
+.footer strong { color: var(--yellow); text-transform: uppercase; }
+@media (max-width: 980px) {
+  .cc-header { grid-template-columns: auto auto; }
+  .cc-menu { display: inline-flex; justify-self: end; }
+  .cc-nav { grid-column: 1 / -1; justify-self: stretch; overflow-x: auto; padding-bottom: .2rem; }
+  .hero { grid-template-columns: 1fr; min-height: auto; padding-bottom: 8rem; }
+  .hero-badge { max-width: 320px; margin: 0 auto; }
+  .manifesto, .report-card, .report-form, .admin-tools { grid-template-columns: 1fr; }
+  .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .wide { grid-column: auto; }
-  .header-inner { min-height: 76px; }
-  .brand img { width: 48px; height: 48px; }
+}
+@media (max-width: 640px) {
+  body { padding-bottom: 78px; }
+  .cc-header { min-height: 74px; padding: .65rem .85rem; }
+  .cc-brand img { width: 48px; height: 48px; }
+  .cc-brand strong { font-size: 1.25rem; }
+  .cc-nav { display: none; }
+  .hero { padding: 2rem 1rem 7rem; }
+  .hero-actions .button { width: 100%; }
+  .category-grid { grid-template-columns: 1fr; }
+  .section { padding: 2.5rem 1rem; }
+  .mobile-tabbar { display: flex; }
+  .footer { flex-direction: column; padding-bottom: 7rem; }
 }
 
-    .inline-logo { width: 58px; height: 58px; border-radius: 14px; flex: 0 0 auto; }
+    .inline-logo { width: 58px; height: 58px; border-radius: 18px; flex: 0 0 auto; }
     </style>
   </head>
   <body>
-    <div class="access-strip">
-      <a href="#fascicolo">Accedi al Fascicolo del Cittadino</a>
-    </div>
-
-    <header class="site-header">
-      <div class="header-inner">
-        <a class="brand" href="#home" aria-label="Il Faro di Canicattì">
-          <svg aria-hidden="true" class="inline-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#0f4c5c"/>
-  <path d="M256 70 384 430H128L256 70Z" fill="#f6aa1c"/>
-  <path d="M256 120 322 430H190l66-310Z" fill="#fff7df" opacity=".95"/>
-  <circle cx="256" cy="230" r="42" fill="#0f4c5c"/>
+    <header class="cc-header">
+      <a class="cc-brand" href="#home" aria-label="Il Faro di Canicattì Controcorrente">
+        <svg aria-hidden="true" class="inline-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Il Faro di Canicattì Controcorrente">
+  <rect width="512" height="512" rx="96" fill="#0b0b0f"/>
+  <circle cx="256" cy="256" r="216" fill="#d31018"/>
+  <path d="M72 330c74-62 128-62 196 0 52 46 100 50 172 12-56 88-152 128-252 92-62-22-102-60-116-104Z" fill="#ffc400"/>
+  <path d="M66 356c62-78 140-92 218-34 54 40 94 42 166 8-64 58-134 73-210 42-75-31-115-24-174 36Z" fill="#f26a00" opacity=".95"/>
+  <path d="M254 104 338 330H170l84-226Z" fill="#fff"/>
+  <path d="M254 150 296 330h-84l42-180Z" fill="#ffc400"/>
+  <circle cx="254" cy="228" r="24" fill="#d31018"/>
+  <text x="256" y="392" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="46" fill="#fff" letter-spacing="2">FARO</text>
 </svg>
 
-          <span><strong>Il Faro di Canicattì</strong><small>Controcorrente</small></span>
-        </a>
-        <button class="menu-button" type="button" aria-label="Apri menu">☰</button>
-      </div>
+        <span><strong>Il Faro</strong><small>Canicattì • Controcorrente</small></span>
+      </a>
+      <button class="cc-menu" type="button" aria-label="Apri menu">☰</button>
+      <nav class="cc-nav" aria-label="Navigazione principale">
+        <a href="#segnala">Segnala</a>
+        <a href="#fari">Fari attivi</a>
+        <a href="#fascicolo">Fascicolo</a>
+        <a class="nav-cta" href="#segnala">Apri un faro</a>
+      </nav>
     </header>
 
-    <main id="home" class="page-shell">
-      <nav class="breadcrumb" aria-label="Percorso">
-        <a href="#home">Home</a><span>/</span><span>Segnalazioni per la cura della città</span>
-      </nav>
-
-      <section class="intro">
-        <p class="section-label">Segnalazioni</p>
-        <h1>Segnalazioni per la cura della città</h1>
-        <p class="lead">Segnala disservizi o anomalie che riscontri a Canicattì per ottenere una risposta.</p>
+    <main id="home">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="kicker">Lottare x Restare • Canicattì</p>
+          <h1>Accendiamo un faro sulle segnalazioni della città.</h1>
+          <p>Una web app civica, veloce da smartphone, per raccogliere disservizi, anomalie e proposte dei cittadini con un flusso semplice e tracciabile.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#segnala">Invia segnalazione</a>
+            <a class="button button-ghost" href="#fascicolo">Area amministratori</a>
+          </div>
+        </div>
+        <div class="hero-badge" aria-label="Identità Controcorrente">
+          <span>CONTRO</span>
+          <strong>CORRENTE</strong>
+          <em>Il Faro di Canicattì</em>
+        </div>
       </section>
 
-      <section class="choose-section" aria-labelledby="choose-title">
-        <h2 id="choose-title">Cosa vuoi segnalare?</h2>
-        <div class="notice">
-          <strong>Accesso consigliato con SPID o CIE.</strong>
-          <p>Per una valutazione efficace, indica con precisione il problema e la sua posizione. Per alcune segnalazioni è obbligatorio allegare una o due foto e specificare l’indirizzo completo con ulteriori riferimenti utili.</p>
+      <section id="fari" class="section manifesto">
+        <div>
+          <p class="kicker">La nostra missione</p>
+          <h2>Un portale cittadino per non lasciare nessuna segnalazione al buio.</h2>
         </div>
+        <p>Il layout riprende l'energia visiva di Controcorrente: contrasti netti, rosso, giallo, arancio, onde grafiche e inviti all'azione immediati. La struttura resta pensata per diventare un portale completo con login, database e gestione multiutente.</p>
+      </section>
 
+      <section class="section categories" aria-labelledby="choose-title">
+        <div class="section-heading">
+          <p class="kicker">Apri un faro</p>
+          <h2 id="choose-title">Cosa vuoi segnalare?</h2>
+          <p>Scegli una categoria: il modulo si precompila e puoi inviare la pratica anche da smartphone.</p>
+        </div>
         <div class="category-grid" id="categoryGrid">
-          <button class="category-card" type="button" data-category="Manutenzione Strade"><span class="category-icon">🛣️</span><span>Manutenzione Strade</span></button>
-          <button class="category-card" type="button" data-category="Pulizia della Città"><span class="category-icon">🧹</span><span>Pulizia della Città</span></button>
-          <button class="category-card" type="button" data-category="Arredo Urbano"><span class="category-icon">🚏</span><span>Arredo Urbano</span></button>
-          <button class="category-card" type="button" data-category="Verde Pubblico"><span class="category-icon">🌳</span><span>Verde Pubblico</span></button>
-          <button class="category-card" type="button" data-category="Cimiteri"><span class="category-icon">🕯️</span><span>Cimiteri</span></button>
-          <button class="category-card" type="button" data-category="Veicoli Abbandonati"><span class="category-icon">🚗</span><span>Veicoli Abbandonati</span></button>
-          <button class="category-card category-card-dark" type="button" data-category="Blackout Elettrico"><span class="category-icon">⚡</span><span>Blackout Elettrico</span></button>
+          <button class="category-card" type="button" data-category="Manutenzione Strade"><span>🛣️</span><strong>Manutenzione Strade</strong><small>Buche, marciapiedi, segnaletica</small></button>
+          <button class="category-card" type="button" data-category="Pulizia della Città"><span>🧹</span><strong>Pulizia della Città</strong><small>Rifiuti, decoro, discariche</small></button>
+          <button class="category-card" type="button" data-category="Arredo Urbano"><span>🚏</span><strong>Arredo Urbano</strong><small>Panchine, fermate, spazi pubblici</small></button>
+          <button class="category-card" type="button" data-category="Verde Pubblico"><span>🌳</span><strong>Verde Pubblico</strong><small>Parchi, alberi, aree gioco</small></button>
+          <button class="category-card" type="button" data-category="Cimiteri"><span>🕯️</span><strong>Cimiteri</strong><small>Servizi e manutenzione</small></button>
+          <button class="category-card" type="button" data-category="Veicoli Abbandonati"><span>🚗</span><strong>Veicoli Abbandonati</strong><small>Sicurezza e viabilità</small></button>
+          <button class="category-card highlight" type="button" data-category="Blackout Elettrico"><span>⚡</span><strong>Blackout Elettrico</strong><small>Illuminazione e guasti urgenti</small></button>
         </div>
       </section>
 
-      <section id="segnala" class="form-panel" aria-labelledby="form-title">
-        <div class="panel-heading">
-          <p class="section-label">Compila la pratica</p>
-          <h2 id="form-title">Dettagli della segnalazione</h2>
-          <p>Il modulo si precompila quando scegli una categoria, come in un centro segnalazioni pubblico.</p>
+      <section id="segnala" class="section report-panel" aria-labelledby="form-title">
+        <div class="section-heading">
+          <p class="kicker">Segnalazione cittadina</p>
+          <h2 id="form-title">Raccontaci cosa non va.</h2>
+          <p>Allega foto se disponibili e indica un riferimento preciso: riceverai un codice pratica dimostrativo.</p>
         </div>
         <form id="reportForm" class="report-form">
           <label>Categoria<select name="category" required><option value="">Seleziona</option><option>Manutenzione Strade</option><option>Pulizia della Città</option><option>Arredo Urbano</option><option>Verde Pubblico</option><option>Cimiteri</option><option>Veicoli Abbandonati</option><option>Blackout Elettrico</option></select></label>
           <label>Indirizzo completo<input name="address" required placeholder="Via, civico, contrada o riferimento" /></label>
-          <label class="wide">Ulteriori riferimenti utili<textarea name="description" required minlength="20" placeholder="Descrivi il problema, il punto preciso, eventuali numeri di lampione o riferimenti visivi"></textarea></label>
+          <label class="wide">Descrizione<textarea name="description" required minlength="20" placeholder="Descrivi il problema, il punto preciso e ogni dettaglio utile"></textarea></label>
           <label>Nome e cognome<input name="name" autocomplete="name" required placeholder="Mario Rossi" /></label>
           <label>Email<input name="email" type="email" autocomplete="email" required placeholder="nome@email.it" /></label>
           <label>Priorità<select name="priority"><option>Ordinaria</option><option>Alta</option><option>Urgente</option></select></label>
           <label>Foto o allegato<input name="attachment" type="file" accept="image/*,.pdf" /></label>
-          <button class="primary-action wide" type="submit">Invia segnalazione</button>
+          <button class="button button-primary wide" type="submit">Invia e accendi il faro</button>
         </form>
         <p id="formMessage" class="form-message" role="status"></p>
       </section>
 
-      <section id="fascicolo" class="admin-panel" aria-labelledby="admin-title">
-        <div class="panel-heading">
-          <p class="section-label">Fascicolo del cittadino / Back office</p>
-          <h2 id="admin-title">Gestione segnalazioni</h2>
-          <p>Area demo multiutente per consultare, smistare e aggiornare le pratiche ricevute.</p>
+      <section id="fascicolo" class="section admin-panel" aria-labelledby="admin-title">
+        <div class="section-heading">
+          <p class="kicker">Back office</p>
+          <h2 id="admin-title">Gestione multiutente delle pratiche.</h2>
+          <p>Demo per operatori e amministratori: filtra, assegna e aggiorna lo stato delle segnalazioni.</p>
         </div>
         <div class="admin-tools">
           <label>Ruolo<select id="adminRole"><option>URP - Il Faro</option><option>Manutenzioni</option><option>Polizia Municipale</option><option>Ambiente</option><option>Servizi cimiteriali</option></select></label>
@@ -176,22 +222,17 @@ address { font-style: normal; line-height: 1.5; }
         </div>
         <div id="reportsList" class="reports-list" aria-live="polite"></div>
       </section>
-
-      <p class="ai-note">Le immagini e le icone presenti in questa pagina hanno finalità puramente illustrative.</p>
     </main>
 
-    <footer class="site-footer">
-      <div class="footer-inner">
-        <a class="brand footer-brand" href="#home"><svg aria-hidden="true" class="inline-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#0f4c5c"/>
-  <path d="M256 70 384 430H128L256 70Z" fill="#f6aa1c"/>
-  <path d="M256 120 322 430H190l66-310Z" fill="#fff7df" opacity=".95"/>
-  <circle cx="256" cy="230" r="42" fill="#0f4c5c"/>
-</svg>
-<span><strong>Il Faro di Canicattì</strong><small>Controcorrente</small></span></a>
-        <address>Piazza principale - 92024 Canicattì (AG)</address>
-        <nav aria-label="Link utili"><a href="#">Privacy Policy</a><a href="#">Note legali</a><a href="#">Accessibilità</a></nav>
-      </div>
+    <nav class="mobile-tabbar" aria-label="Navigazione mobile">
+      <a href="#home">Home</a>
+      <a href="#segnala">Segnala</a>
+      <a href="#fascicolo">Pratiche</a>
+    </nav>
+
+    <footer class="footer">
+      <strong>Il Faro di Canicattì</strong>
+      <span>Web app civica ispirata al movimento Controcorrente.</span>
     </footer>
     <script>
 const STORAGE_KEY = 'faro-canicatti-reports';

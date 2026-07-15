@@ -55,3 +55,7 @@ Se Git Bash mostra `bash: npm: command not found`, puoi comunque aprire il porta
 ## Se non hai scaricato lo ZIP
 
 Se non hai lo ZIP e quindi non puoi aprire i file del progetto, usa `PORTALE_STANDALONE.html`: è una versione in un solo file che puoi aprire con doppio click. Leggi `COME_USARE_STANDALONE.md`.
+
+## Direzione design
+
+Il layout usa una direzione visiva ispirata a Controcorrente: contrasti scuri, rosso, giallo e arancio, logo SVG testuale, call to action forti e navigazione mobile da web app.
