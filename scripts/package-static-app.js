@@ -9,6 +9,7 @@ const files = [
   'README.md',
   'ANTEPRIMA_LOCALE.md',
   'GITHUB_UPLOAD.md',
+  'GITHUB_PAGES_PREVIEW.md',
   'SE_ZIP_NON_ESISTE.md',
   'SENZA_NPM.md',
   'package.json',

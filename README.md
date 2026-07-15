@@ -55,3 +55,7 @@ Se Git Bash mostra `bash: npm: command not found`, puoi comunque aprire il porta
 ## Direzione design
 
 Il layout usa una direzione visiva ispirata a Controcorrente: contrasti scuri, rosso, giallo e arancio, logo SVG testuale, call to action forti e navigazione mobile da web app.
+
+## Anteprima online
+
+Per vedere il portale online tramite GitHub Pages, leggi `GITHUB_PAGES_PREVIEW.md`. Dopo l'attivazione su GitHub, l'URL previsto è `https://johnbruk.github.io/FaroCanicatti/`.
