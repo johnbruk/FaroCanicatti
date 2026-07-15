@@ -1,13 +1,15 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const { execFileSync } = require('node:child_process');
 
 const requiredFiles = [
   'index.html',
   'src/main.js',
+  'src/auth.js',
   'src/styles.css',
   'manifest.webmanifest',
   'service-worker.js',
-  'icons/icon.svg',
+  'icons/controcorrente.svg',
   'scripts/serve-static-app.js'
 ];
 
@@ -18,9 +20,14 @@ for (const file of requiredFiles) {
   }
 }
 
+// Il manifest deve essere JSON valido.
 JSON.parse(fs.readFileSync(path.join(process.cwd(), 'manifest.webmanifest'), 'utf8'));
-new Function(fs.readFileSync(path.join(process.cwd(), 'src/main.js'), 'utf8'));
-new Function(fs.readFileSync(path.join(process.cwd(), 'service-worker.js'), 'utf8'));
-new Function(fs.readFileSync(path.join(process.cwd(), 'scripts/serve-static-app.js'), 'utf8'));
+
+// I file JS (moduli ES inclusi) vengono validati con `node --check`,
+// che comprende la sintassi import/export a differenza di `new Function`.
+const jsFiles = ['src/main.js', 'src/auth.js', 'service-worker.js', 'scripts/serve-static-app.js'];
+for (const file of jsFiles) {
+  execFileSync(process.execPath, ['--check', path.join(process.cwd(), file)], { stdio: 'pipe' });
+}
 
 console.log('Static app validation completed successfully.');
