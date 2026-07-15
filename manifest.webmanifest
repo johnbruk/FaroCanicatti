@@ -1,0 +1,13 @@
+{
+  "name": "Faro 1 di Canicattì",
+  "short_name": "Faro 1",
+  "description": "Portale civico per segnalazioni cittadine a Canicattì.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "lang": "it",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

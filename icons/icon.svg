@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Controcorrente Faro 1 Canicattì">
+  <rect width="512" height="512" rx="256" fill="#ffffff"/>
+  <circle cx="256" cy="256" r="236" fill="none" stroke="#f1f1f1" stroke-width="28"/>
+  <path d="M72 320c78-62 141-68 210-18 55 40 94 38 158 2-42 62-103 92-183 72-70-17-119-7-185 54Z" fill="#f7b500"/>
+  <path d="M55 356c92-92 178-108 258-48 48 36 86 34 144-4-63 82-154 112-258 80-52-16-92-1-144 46Z" fill="#f36b00" opacity=".92"/>
+  <path d="M76 86h360v214H76z" rx="34" fill="#cf121b"/>
+  <text x="256" y="170" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="64" fill="#ffffff" letter-spacing="2">CONTRO</text>
+  <text x="256" y="246" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="62" fill="#ffc400" letter-spacing="1">CORRENTE</text>
+  <text x="256" y="286" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#ffffff" font-weight="700">Lottare x Restare</text>
+  <path d="M300 330 337 420h-74l37-90Z" fill="#cf121b"/>
+  <path d="M300 352 318 420h-36l18-68Z" fill="#ffc400"/>
+  <text x="256" y="472" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#1f2937" font-weight="800">FARO 1 • CANICATTÌ</text>
+</svg>

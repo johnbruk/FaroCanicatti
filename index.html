@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="Faro 1 di Canicattì: portale web app per raccogliere segnalazioni cittadine." />
+    <title>Faro 1 di Canicattì | Portale segnalazioni</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="Faro 1 di Canicattì">
+        <img src="icons/icon.svg" alt="Logo Controcorrente Faro 1 Canicattì" />
+        <span><strong>Faro 1 di Canicattì</strong><small>Portale civico Controcorrente</small></span>
+      </a>
+      <nav class="desktop-nav" aria-label="Navigazione principale">
+        <a href="#perche">Perché segnalare</a>
+        <a href="#segnala">Nuova segnalazione</a>
+        <a href="#fascicolo">Gestisci</a>
+      </nav>
+    </header>
+
+    <main id="home">
+      <section class="hero section-shell">
+        <div class="hero-text">
+          <p class="eyebrow">Portale cittadino</p>
+          <h1>Segnalazioni per la cura di Canicattì.</h1>
+          <p class="lead">Una web app semplice, chiara e navigabile da smartphone per raccogliere disservizi, anomalie e richieste dei cittadini.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#segnala">Invia una segnalazione</a>
+            <a class="button secondary" href="#fascicolo">Consulta pratiche demo</a>
+          </div>
+        </div>
+        <aside class="identity-card" aria-label="Identità del progetto">
+          <img src="icons/icon.svg" alt="" />
+          <strong>Faro 1</strong>
+          <span>Canicattì</span>
+        </aside>
+      </section>
+
+      <section id="perche" class="section-shell info-grid">
+        <article class="intro-card">
+          <p class="eyebrow">Come funziona</p>
+          <h2>Un percorso pulito: scegli, descrivi, invia.</h2>
+          <p>La pagina segue un'impostazione istituzionale e leggera: sfondo bianco, sezioni ordinate, testo leggibile e azioni sempre evidenti anche su mobile.</p>
+        </article>
+        <article class="stat-card">
+          <span id="totalReports">0</span>
+          <small>pratiche demo registrate</small>
+        </article>
+      </section>
+
+      <section class="section-shell categories" aria-labelledby="choose-title">
+        <div class="section-heading">
+          <p class="eyebrow">Apri una segnalazione</p>
+          <h2 id="choose-title">Cosa vuoi segnalare?</h2>
+          <p>Scegli una categoria. Il modulo si precompila automaticamente e puoi completare l’invio da telefono.</p>
+        </div>
+        <div class="category-grid" id="categoryGrid">
+          <button class="category-card" type="button" data-category="Manutenzione Strade"><span>01</span><strong>Manutenzione Strade</strong><small>Buche, marciapiedi, segnaletica</small></button>
+          <button class="category-card" type="button" data-category="Pulizia della Città"><span>02</span><strong>Pulizia della Città</strong><small>Rifiuti, decoro, discariche</small></button>
+          <button class="category-card" type="button" data-category="Arredo Urbano"><span>03</span><strong>Arredo Urbano</strong><small>Panchine, fermate, spazi pubblici</small></button>
+          <button class="category-card" type="button" data-category="Verde Pubblico"><span>04</span><strong>Verde Pubblico</strong><small>Parchi, alberi, aree gioco</small></button>
+          <button class="category-card" type="button" data-category="Cimiteri"><span>05</span><strong>Cimiteri</strong><small>Servizi e manutenzione</small></button>
+          <button class="category-card" type="button" data-category="Veicoli Abbandonati"><span>06</span><strong>Veicoli Abbandonati</strong><small>Sicurezza e viabilità</small></button>
+          <button class="category-card" type="button" data-category="Blackout Elettrico"><span>07</span><strong>Blackout Elettrico</strong><small>Illuminazione e guasti urgenti</small></button>
+        </div>
+      </section>
+
+      <section id="segnala" class="section-shell report-panel" aria-labelledby="form-title">
+        <div class="section-heading">
+          <p class="eyebrow">Nuova pratica</p>
+          <h2 id="form-title">Descrivi il problema.</h2>
+          <p>Inserisci luogo, descrizione e contatti. Riceverai un codice pratica dimostrativo.</p>
+        </div>
+        <form id="reportForm" class="report-form">
+          <label>Categoria<select name="category" required><option value="">Seleziona</option><option>Manutenzione Strade</option><option>Pulizia della Città</option><option>Arredo Urbano</option><option>Verde Pubblico</option><option>Cimiteri</option><option>Veicoli Abbandonati</option><option>Blackout Elettrico</option></select></label>
+          <label>Indirizzo completo<input name="address" required placeholder="Via, civico, contrada o riferimento" /></label>
+          <label class="wide">Descrizione<textarea name="description" required minlength="20" placeholder="Descrivi il problema, il punto preciso e ogni dettaglio utile"></textarea></label>
+          <label>Nome e cognome<input name="name" autocomplete="name" required placeholder="Mario Rossi" /></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required placeholder="nome@email.it" /></label>
+          <label>Priorità<select name="priority"><option>Ordinaria</option><option>Alta</option><option>Urgente</option></select></label>
+          <label>Foto o allegato<input name="attachment" type="file" accept="image/*,.pdf" /></label>
+          <button class="button primary wide" type="submit">Invia segnalazione</button>
+        </form>
+        <p id="formMessage" class="form-message" role="status"></p>
+      </section>
+
+      <section id="fascicolo" class="section-shell admin-panel" aria-labelledby="admin-title">
+        <div class="section-heading">
+          <p class="eyebrow">Area gestione</p>
+          <h2 id="admin-title">Back office demo.</h2>
+          <p>Vista dimostrativa per filtrare, assegnare e aggiornare lo stato delle segnalazioni.</p>
+        </div>
+        <div class="admin-tools">
+          <label>Ruolo<select id="adminRole"><option>URP - Faro 1</option><option>Manutenzioni</option><option>Polizia Municipale</option><option>Ambiente</option><option>Servizi cimiteriali</option></select></label>
+          <label>Stato<select id="statusFilter"><option value="">Tutte</option><option>Ricevuta</option><option>In lavorazione</option><option>Risolta</option></select></label>
+        </div>
+        <div id="reportsList" class="reports-list" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <nav class="mobile-tabbar" aria-label="Navigazione mobile">
+      <a href="#home">Home</a>
+      <a href="#segnala">Segnala</a>
+      <a href="#fascicolo">Pratiche</a>
+    </nav>
+
+    <footer class="footer">
+      <span>Faro 1 di Canicattì</span>
+      <span>Portale civico dimostrativo</span>
+    </footer>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
