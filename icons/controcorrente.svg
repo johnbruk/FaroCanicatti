@@ -9,12 +9,17 @@
     <!-- onde arancio e giallo sulla linea di separazione -->
     <path d="M0 250 C70 224 130 286 200 282 C270 278 320 236 400 244 L400 300 C320 296 270 320 200 322 C130 324 70 300 0 306 Z" fill="#ee7203"/>
     <path d="M0 286 C80 258 140 316 210 312 C285 308 330 280 400 286 L400 360 L0 360 Z" fill="#f5b301"/>
-    <!-- lettering (textLength garantisce che stia dentro il cerchio) -->
-    <text x="200" y="120" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="60" fill="#ffffff" textLength="250" lengthAdjust="spacingAndGlyphs">CONTRO</text>
-    <text x="200" y="185" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="60" fill="#f5b301" textLength="290" lengthAdjust="spacingAndGlyphs">CORRENTE</text>
-    <text x="200" y="224" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="24" fill="#ffffff" textLength="200" lengthAdjust="spacingAndGlyphs">Lottare x Restare</text>
+    <!-- CONTRO (bianco) -->
+    <text x="52" y="120" text-anchor="start" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="58" fill="#ffffff" textLength="182" lengthAdjust="spacingAndGlyphs">CONTRO</text>
+    <!-- casella con X (marchio elettorale) -->
+    <rect x="250" y="74" width="60" height="46" rx="8" fill="none" stroke="#ffffff" stroke-width="6"/>
+    <path d="M259 82 L301 112 M301 82 L259 112" stroke="#ee7203" stroke-width="7" stroke-linecap="round"/>
+    <!-- CORRENTE (giallo, specchiato) -->
+    <text x="0" y="188" text-anchor="middle" transform="translate(200,0) scale(-1,1)" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="58" fill="#f5b301" textLength="300" lengthAdjust="spacingAndGlyphs">CORRENTE</text>
+    <!-- tagline -->
+    <text x="200" y="226" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="24" fill="#ffffff" textLength="205" lengthAdjust="spacingAndGlyphs">Lottare x Restare</text>
     <!-- numero 1 del Faro nell'onda -->
-    <text x="200" y="336" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="46" fill="#d42e12">1</text>
+    <text x="205" y="336" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="44" fill="#d42e12">1</text>
   </g>
   <circle cx="200" cy="200" r="194" fill="none" stroke="#e2e6ec" stroke-width="3"/>
 </svg>
