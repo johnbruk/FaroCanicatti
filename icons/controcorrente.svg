@@ -1,23 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Controcorrente — Il Faro di Canicattì">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Controcorrente — Il Faro 1 di Canicattì">
   <defs>
-    <clipPath id="cc-circle"><circle cx="200" cy="200" r="196"/></clipPath>
+    <clipPath id="cc-clip"><circle cx="200" cy="200" r="196"/></clipPath>
   </defs>
-  <g clip-path="url(#cc-circle)">
+  <g clip-path="url(#cc-clip)">
     <rect width="400" height="400" fill="#ffffff"/>
     <!-- corpo rosso superiore -->
-    <path d="M0 0 H400 V250 C330 235 300 250 250 258 C170 270 120 250 60 260 C30 265 12 258 0 250 Z" fill="#d42e12"/>
-    <!-- onde arancio/giallo -->
-    <path d="M-10 262 C60 232 120 300 200 296 C275 292 300 250 360 250 C300 300 250 320 190 314 C120 307 70 300 20 336 C4 320 -6 292 -10 262 Z" fill="#ee7203"/>
-    <path d="M-10 300 C70 262 140 330 210 326 C285 322 320 288 380 292 C320 340 250 360 180 350 C110 340 70 336 20 372 C4 352 -4 330 -10 300 Z" fill="#f5b301"/>
-    <!-- lettering -->
-    <text x="200" y="120" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="70" font-weight="900" fill="#ffffff" letter-spacing="2">CONTRO</text>
-    <text x="200" y="190" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="70" font-weight="900" fill="#f5b301" letter-spacing="2">CORRENTE</text>
-    <text x="200" y="228" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" fill="#ffffff">Lottare x Restare</text>
-    <!-- riquadro X (marchio) -->
-    <rect x="300" y="60" width="52" height="40" rx="6" fill="none" stroke="#ffffff" stroke-width="5"/>
-    <path d="M308 66 L344 94 M344 66 L308 94" stroke="#ee7203" stroke-width="6" stroke-linecap="round"/>
-    <!-- faro n.1 stilizzato nell'onda -->
-    <text x="286" y="312" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="34" font-weight="900" fill="#ee7203">1</text>
+    <rect width="400" height="250" fill="#d42e12"/>
+    <!-- onde arancio e giallo sulla linea di separazione -->
+    <path d="M0 250 C70 224 130 286 200 282 C270 278 320 236 400 244 L400 300 C320 296 270 320 200 322 C130 324 70 300 0 306 Z" fill="#ee7203"/>
+    <path d="M0 286 C80 258 140 316 210 312 C285 308 330 280 400 286 L400 360 L0 360 Z" fill="#f5b301"/>
+    <!-- lettering (textLength garantisce che stia dentro il cerchio) -->
+    <text x="200" y="120" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="60" fill="#ffffff" textLength="250" lengthAdjust="spacingAndGlyphs">CONTRO</text>
+    <text x="200" y="185" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="60" fill="#f5b301" textLength="290" lengthAdjust="spacingAndGlyphs">CORRENTE</text>
+    <text x="200" y="224" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="24" fill="#ffffff" textLength="200" lengthAdjust="spacingAndGlyphs">Lottare x Restare</text>
+    <!-- numero 1 del Faro nell'onda -->
+    <text x="200" y="336" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-weight="900" font-size="46" fill="#d42e12">1</text>
   </g>
-  <circle cx="200" cy="200" r="196" fill="none" stroke="#e2e6ec" stroke-width="4"/>
+  <circle cx="200" cy="200" r="194" fill="none" stroke="#e2e6ec" stroke-width="3"/>
 </svg>

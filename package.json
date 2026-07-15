@@ -2,10 +2,10 @@
   "name": "il-faro-di-canicatti",
   "version": "0.1.0",
   "private": true,
-  "description": "Portale cittadino PWA per raccogliere e gestire segnalazioni dei cittadini.",
+  "description": "Portale civico PWA di Canicattì per raccogliere e gestire le segnalazioni dei cittadini.",
   "scripts": {
     "start": "node scripts/serve-static-app.js",
     "build": "node scripts/validate-static-app.js",
-    "package": "npm run build && node scripts/package-static-app.js"
+    "test": "node scripts/validate-static-app.js"
   }
 }

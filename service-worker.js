@@ -1,5 +1,5 @@
 const CACHE_NAME = 'faro-canicatti-v2';
-const ASSETS = ['.', 'index.html', 'src/main.js', 'src/auth.js', 'src/styles.css', 'manifest.webmanifest', 'icons/controcorrente.svg', 'icons/icon.svg'];
+const ASSETS = ['.', 'index.html', 'src/main.js', 'src/auth.js', 'src/styles.css', 'manifest.webmanifest', 'icons/controcorrente.svg'];
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();
