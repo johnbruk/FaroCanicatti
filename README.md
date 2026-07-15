@@ -59,3 +59,7 @@ Il layout usa una direzione istituzionale chiara ispirata ad Articolo30: pagine 
 ## Anteprima online
 
 Per vedere il portale online tramite GitHub Pages, leggi `GITHUB_PAGES_PREVIEW.md`. Dopo l'attivazione su GitHub, l'URL previsto è `https://johnbruk.github.io/FaroCanicatti/`.
+
+## Flusso PR manuale
+
+Poiché da questo ambiente il push diretto verso GitHub può essere bloccato, il progetto usa un flusso basato su Pull Request manuale. Vedi `PR_WORKFLOW.md`.

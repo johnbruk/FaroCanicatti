@@ -10,6 +10,7 @@ const files = [
   'ANTEPRIMA_LOCALE.md',
   'GITHUB_UPLOAD.md',
   'GITHUB_PAGES_PREVIEW.md',
+  'PR_WORKFLOW.md',
   'SE_ZIP_NON_ESISTE.md',
   'SENZA_NPM.md',
   'package.json',
