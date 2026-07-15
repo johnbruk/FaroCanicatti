@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b3d4a" />
+    <meta name="description" content="Il Faro di Canicattì: centro segnalazioni per la cura della città." />
+    <title>Segnalazioni per la cura della città | Il Faro di Canicattì</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <div class="access-strip">
+      <a href="#fascicolo">Accedi al Fascicolo del Cittadino</a>
+    </div>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href="#home" aria-label="Il Faro di Canicattì">
+          <img src="icons/icon.svg" alt="" />
+          <span><strong>Il Faro di Canicattì</strong><small>Controcorrente</small></span>
+        </a>
+        <button class="menu-button" type="button" aria-label="Apri menu">☰</button>
+      </div>
+    </header>
+
+    <main id="home" class="page-shell">
+      <nav class="breadcrumb" aria-label="Percorso">
+        <a href="#home">Home</a><span>/</span><span>Segnalazioni per la cura della città</span>
+      </nav>
+
+      <section class="intro">
+        <p class="section-label">Segnalazioni</p>
+        <h1>Segnalazioni per la cura della città</h1>
+        <p class="lead">Segnala disservizi o anomalie che riscontri a Canicattì per ottenere una risposta.</p>
+      </section>
+
+      <section class="choose-section" aria-labelledby="choose-title">
+        <h2 id="choose-title">Cosa vuoi segnalare?</h2>
+        <div class="notice">
+          <strong>Accesso consigliato con SPID o CIE.</strong>
+          <p>Per una valutazione efficace, indica con precisione il problema e la sua posizione. Per alcune segnalazioni è obbligatorio allegare una o due foto e specificare l’indirizzo completo con ulteriori riferimenti utili.</p>
+        </div>
+
+        <div class="category-grid" id="categoryGrid">
+          <button class="category-card" type="button" data-category="Manutenzione Strade"><span class="category-icon">🛣️</span><span>Manutenzione Strade</span></button>
+          <button class="category-card" type="button" data-category="Pulizia della Città"><span class="category-icon">🧹</span><span>Pulizia della Città</span></button>
+          <button class="category-card" type="button" data-category="Arredo Urbano"><span class="category-icon">🚏</span><span>Arredo Urbano</span></button>
+          <button class="category-card" type="button" data-category="Verde Pubblico"><span class="category-icon">🌳</span><span>Verde Pubblico</span></button>
+          <button class="category-card" type="button" data-category="Cimiteri"><span class="category-icon">🕯️</span><span>Cimiteri</span></button>
+          <button class="category-card" type="button" data-category="Veicoli Abbandonati"><span class="category-icon">🚗</span><span>Veicoli Abbandonati</span></button>
+          <button class="category-card category-card-dark" type="button" data-category="Blackout Elettrico"><span class="category-icon">⚡</span><span>Blackout Elettrico</span></button>
+        </div>
+      </section>
+
+      <section id="segnala" class="form-panel" aria-labelledby="form-title">
+        <div class="panel-heading">
+          <p class="section-label">Compila la pratica</p>
+          <h2 id="form-title">Dettagli della segnalazione</h2>
+          <p>Il modulo si precompila quando scegli una categoria, come in un centro segnalazioni pubblico.</p>
+        </div>
+        <form id="reportForm" class="report-form">
+          <label>Categoria<select name="category" required><option value="">Seleziona</option><option>Manutenzione Strade</option><option>Pulizia della Città</option><option>Arredo Urbano</option><option>Verde Pubblico</option><option>Cimiteri</option><option>Veicoli Abbandonati</option><option>Blackout Elettrico</option></select></label>
+          <label>Indirizzo completo<input name="address" required placeholder="Via, civico, contrada o riferimento" /></label>
+          <label class="wide">Ulteriori riferimenti utili<textarea name="description" required minlength="20" placeholder="Descrivi il problema, il punto preciso, eventuali numeri di lampione o riferimenti visivi"></textarea></label>
+          <label>Nome e cognome<input name="name" autocomplete="name" required placeholder="Mario Rossi" /></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required placeholder="nome@email.it" /></label>
+          <label>Priorità<select name="priority"><option>Ordinaria</option><option>Alta</option><option>Urgente</option></select></label>
+          <label>Foto o allegato<input name="attachment" type="file" accept="image/*,.pdf" /></label>
+          <button class="primary-action wide" type="submit">Invia segnalazione</button>
+        </form>
+        <p id="formMessage" class="form-message" role="status"></p>
+      </section>
+
+      <section id="fascicolo" class="admin-panel" aria-labelledby="admin-title">
+        <div class="panel-heading">
+          <p class="section-label">Fascicolo del cittadino / Back office</p>
+          <h2 id="admin-title">Gestione segnalazioni</h2>
+          <p>Area demo multiutente per consultare, smistare e aggiornare le pratiche ricevute.</p>
+        </div>
+        <div class="admin-tools">
+          <label>Ruolo<select id="adminRole"><option>URP - Il Faro</option><option>Manutenzioni</option><option>Polizia Municipale</option><option>Ambiente</option><option>Servizi cimiteriali</option></select></label>
+          <label>Stato<select id="statusFilter"><option value="">Tutte</option><option>Ricevuta</option><option>In lavorazione</option><option>Risolta</option></select></label>
+          <div class="counter"><span id="totalReports">0</span><small>pratiche</small></div>
+        </div>
+        <div id="reportsList" class="reports-list" aria-live="polite"></div>
+      </section>
+
+      <p class="ai-note">Le immagini e le icone presenti in questa pagina hanno finalità puramente illustrative.</p>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <a class="brand footer-brand" href="#home"><img src="icons/icon.svg" alt="" /><span><strong>Il Faro di Canicattì</strong><small>Controcorrente</small></span></a>
+        <address>Piazza principale - 92024 Canicattì (AG)</address>
+        <nav aria-label="Link utili"><a href="#">Privacy Policy</a><a href="#">Note legali</a><a href="#">Accessibilità</a></nav>
+      </div>
+    </footer>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
