@@ -4,113 +4,272 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#d31018" />
-    <meta name="description" content="Il Faro di Canicattì: web app civica ispirata all'identità Controcorrente per raccogliere segnalazioni cittadine." />
-    <title>Il Faro di Canicattì | Controcorrente</title>
+    <meta name="description" content="Il Faro di Canicattì: portale cittadino per inviare e seguire le segnalazioni, con accesso SPID e CIE. Identità Controcorrente." />
+    <title>Il Faro di Canicattì | Centro Segnalazioni</title>
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="src/styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#segnala">Salta al contenuto</a>
+
     <header class="cc-header">
-      <a class="cc-brand" href="#home" aria-label="Il Faro di Canicattì Controcorrente">
-        <img src="icons/icon.svg" alt="" />
-        <span><strong>Il Faro</strong><small>Canicattì • Controcorrente</small></span>
+      <a class="cc-brand" href="#home" aria-label="Il Faro 1 di Canicattì — Controcorrente">
+        <img src="icons/controcorrente.svg" alt="" width="48" height="48" />
+        <span><strong>Il Faro 1</strong><small>di Canicattì • Controcorrente</small></span>
       </a>
-      <button class="cc-menu" type="button" aria-label="Apri menu">☰</button>
+      <button class="cc-menu" type="button" aria-label="Apri menu" aria-expanded="false">☰</button>
       <nav class="cc-nav" aria-label="Navigazione principale">
         <a href="#segnala">Segnala</a>
-        <a href="#fari">Fari attivi</a>
-        <a href="#fascicolo">Fascicolo</a>
-        <a class="nav-cta" href="#segnala">Apri un faro</a>
+        <a href="#mappa">Mappa</a>
+        <a href="#pratiche">Le mie segnalazioni</a>
+        <a href="#traccia">Traccia pratica</a>
+        <div class="cc-auth" id="authArea">
+          <!-- popolato da auth.js -->
+          <button class="button button-spid" type="button" data-action="login">
+            <span class="spid-glyph" aria-hidden="true">✦</span> Accedi con SPID / CIE
+          </button>
+        </div>
       </nav>
     </header>
 
     <main id="home">
+      <!-- HERO -->
       <section class="hero">
         <div class="hero-copy">
-          <p class="kicker">Lottare x Restare • Canicattì</p>
+          <p class="kicker">Lottare x Restare • Centro Segnalazioni</p>
           <h1>Accendiamo un faro sulle segnalazioni della città.</h1>
-          <p>Una web app civica, veloce da smartphone, per raccogliere disservizi, anomalie e proposte dei cittadini con un flusso semplice e tracciabile.</p>
+          <p>Il portale civico di Canicattì per inviare disservizi, anomalie e proposte in pochi passaggi. Accedi con SPID o CIE, allega foto, indica il punto sulla mappa e segui la tua pratica fino alla risoluzione.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#segnala">Invia segnalazione</a>
-            <a class="button button-ghost" href="#fascicolo">Area amministratori</a>
+            <a class="button button-primary" href="#segnala">Invia una segnalazione</a>
+            <a class="button button-ghost" href="#traccia">Traccia una pratica</a>
           </div>
+          <dl class="hero-stats" aria-label="Indicatori del portale">
+            <div><dt>Pratiche gestite</dt><dd id="statTotal">0</dd></div>
+            <div><dt>Risolte</dt><dd id="statResolved">0</dd></div>
+            <div><dt>Uffici collegati</dt><dd>5</dd></div>
+          </dl>
         </div>
-        <div class="hero-badge" aria-label="Identità Controcorrente">
-          <span>CONTRO</span>
-          <strong>CORRENTE</strong>
-          <em>Il Faro di Canicattì</em>
-        </div>
+        <figure class="hero-figure">
+          <img src="icons/controcorrente.svg" alt="Logo Controcorrente — Il Faro 1 di Canicattì" width="320" height="320" />
+        </figure>
       </section>
 
-      <section id="fari" class="section manifesto">
-        <div>
-          <p class="kicker">La nostra missione</p>
-          <h2>Un portale cittadino per non lasciare nessuna segnalazione al buio.</h2>
-        </div>
-        <p>Il layout riprende l'energia visiva di Controcorrente: contrasti netti, rosso, giallo, arancio, onde grafiche e inviti all'azione immediati. La struttura resta pensata per diventare un portale completo con login, database e gestione multiutente.</p>
-      </section>
-
-      <section class="section categories" aria-labelledby="choose-title">
+      <!-- COME FUNZIONA -->
+      <section class="section howto" aria-labelledby="howto-title">
         <div class="section-heading">
-          <p class="kicker">Apri un faro</p>
-          <h2 id="choose-title">Cosa vuoi segnalare?</h2>
-          <p>Scegli una categoria: il modulo si precompila e puoi inviare la pratica anche da smartphone.</p>
+          <p class="kicker">Come funziona</p>
+          <h2 id="howto-title">Segnalare è semplice e tracciabile.</h2>
         </div>
-        <div class="category-grid" id="categoryGrid">
-          <button class="category-card" type="button" data-category="Manutenzione Strade"><span>🛣️</span><strong>Manutenzione Strade</strong><small>Buche, marciapiedi, segnaletica</small></button>
-          <button class="category-card" type="button" data-category="Pulizia della Città"><span>🧹</span><strong>Pulizia della Città</strong><small>Rifiuti, decoro, discariche</small></button>
-          <button class="category-card" type="button" data-category="Arredo Urbano"><span>🚏</span><strong>Arredo Urbano</strong><small>Panchine, fermate, spazi pubblici</small></button>
-          <button class="category-card" type="button" data-category="Verde Pubblico"><span>🌳</span><strong>Verde Pubblico</strong><small>Parchi, alberi, aree gioco</small></button>
-          <button class="category-card" type="button" data-category="Cimiteri"><span>🕯️</span><strong>Cimiteri</strong><small>Servizi e manutenzione</small></button>
-          <button class="category-card" type="button" data-category="Veicoli Abbandonati"><span>🚗</span><strong>Veicoli Abbandonati</strong><small>Sicurezza e viabilità</small></button>
-          <button class="category-card highlight" type="button" data-category="Blackout Elettrico"><span>⚡</span><strong>Blackout Elettrico</strong><small>Illuminazione e guasti urgenti</small></button>
-        </div>
+        <ol class="howto-grid">
+          <li><span class="howto-num">1</span><strong>Accedi</strong><p>Entra con SPID o CIE per firmare la segnalazione e ritrovarla sempre nel tuo fascicolo.</p></li>
+          <li><span class="howto-num">2</span><strong>Descrivi e localizza</strong><p>Scegli la categoria, aggiungi foto e indica il punto preciso sulla mappa o con la geolocalizzazione.</p></li>
+          <li><span class="howto-num">3</span><strong>Segui la pratica</strong><p>Ricevi un codice pratica e controlla lo stato di avanzamento fino alla risoluzione.</p></li>
+        </ol>
       </section>
 
+      <!-- WIZARD SEGNALAZIONE -->
       <section id="segnala" class="section report-panel" aria-labelledby="form-title">
         <div class="section-heading">
-          <p class="kicker">Segnalazione cittadina</p>
+          <p class="kicker">Nuova segnalazione</p>
           <h2 id="form-title">Raccontaci cosa non va.</h2>
-          <p>Allega foto se disponibili e indica un riferimento preciso: riceverai un codice pratica dimostrativo.</p>
+          <p>Un percorso guidato in cinque passi. Puoi completarlo anche da smartphone.</p>
         </div>
-        <form id="reportForm" class="report-form">
-          <label>Categoria<select name="category" required><option value="">Seleziona</option><option>Manutenzione Strade</option><option>Pulizia della Città</option><option>Arredo Urbano</option><option>Verde Pubblico</option><option>Cimiteri</option><option>Veicoli Abbandonati</option><option>Blackout Elettrico</option></select></label>
-          <label>Indirizzo completo<input name="address" required placeholder="Via, civico, contrada o riferimento" /></label>
-          <label class="wide">Descrizione<textarea name="description" required minlength="20" placeholder="Descrivi il problema, il punto preciso e ogni dettaglio utile"></textarea></label>
-          <label>Nome e cognome<input name="name" autocomplete="name" required placeholder="Mario Rossi" /></label>
-          <label>Email<input name="email" type="email" autocomplete="email" required placeholder="nome@email.it" /></label>
-          <label>Priorità<select name="priority"><option>Ordinaria</option><option>Alta</option><option>Urgente</option></select></label>
-          <label>Foto o allegato<input name="attachment" type="file" accept="image/*,.pdf" /></label>
-          <button class="button button-primary wide" type="submit">Invia e accendi il faro</button>
+
+        <ol class="wizard-steps" id="wizardSteps" aria-label="Avanzamento segnalazione">
+          <li data-step="1" class="is-active">Categoria</li>
+          <li data-step="2">Dove</li>
+          <li data-step="3">Cosa</li>
+          <li data-step="4">Chi</li>
+          <li data-step="5">Riepilogo</li>
+        </ol>
+
+        <form id="reportForm" class="wizard" novalidate>
+          <!-- STEP 1: CATEGORIA -->
+          <fieldset class="wizard-panel is-active" data-panel="1">
+            <legend>Che cosa vuoi segnalare?</legend>
+            <div class="category-grid" id="categoryGrid" role="radiogroup" aria-label="Categoria della segnalazione"></div>
+            <div class="sub-wrap" hidden>
+              <label>Dettaglio
+                <select name="subcategory" id="subcategory"></select>
+              </label>
+            </div>
+            <input type="hidden" name="category" id="categoryValue" required />
+          </fieldset>
+
+          <!-- STEP 2: DOVE -->
+          <fieldset class="wizard-panel" data-panel="2">
+            <legend>Dove si trova il problema?</legend>
+            <div class="locate">
+              <label class="wide">Indirizzo o riferimento
+                <input name="address" id="address" placeholder="Via, civico, contrada o punto di riferimento" required />
+              </label>
+              <button class="button button-ghost dark" type="button" id="geoBtn">
+                <span aria-hidden="true">📍</span> Usa la mia posizione
+              </button>
+            </div>
+            <div class="map-preview" id="mapPreview" aria-live="polite">
+              <div class="map-grid" aria-hidden="true"></div>
+              <div class="map-pin" id="mapPin" hidden>📍</div>
+              <p class="map-hint" id="mapHint">La posizione apparirà qui dopo aver inserito l'indirizzo o usato la geolocalizzazione.</p>
+            </div>
+            <input type="hidden" name="lat" id="lat" />
+            <input type="hidden" name="lng" id="lng" />
+          </fieldset>
+
+          <!-- STEP 3: COSA -->
+          <fieldset class="wizard-panel" data-panel="3">
+            <legend>Descrivi la situazione</legend>
+            <label class="wide">Descrizione
+              <textarea name="description" id="description" minlength="20" required placeholder="Descrivi il problema, il punto preciso e ogni dettaglio utile (almeno 20 caratteri)"></textarea>
+            </label>
+            <div class="two-col">
+              <label>Priorità
+                <select name="priority">
+                  <option>Ordinaria</option>
+                  <option>Alta</option>
+                  <option>Urgente</option>
+                </select>
+              </label>
+              <label>Foto o allegato
+                <input name="attachment" type="file" accept="image/*,.pdf" />
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- STEP 4: CHI -->
+          <fieldset class="wizard-panel" data-panel="4">
+            <legend>I tuoi dati</legend>
+            <div class="identity-box" id="identityBox">
+              <!-- popolato da main.js in base allo stato di login -->
+            </div>
+            <label class="consent">
+              <input type="checkbox" name="privacy" required />
+              <span>Ho letto l'informativa privacy e autorizzo il trattamento dei dati per la gestione della segnalazione.</span>
+            </label>
+          </fieldset>
+
+          <!-- STEP 5: RIEPILOGO -->
+          <fieldset class="wizard-panel" data-panel="5">
+            <legend>Controlla e invia</legend>
+            <div class="summary" id="summary" aria-live="polite"></div>
+          </fieldset>
+
+          <div class="wizard-nav">
+            <button class="button button-ghost dark" type="button" id="prevBtn" hidden>Indietro</button>
+            <button class="button button-primary" type="button" id="nextBtn">Continua</button>
+            <button class="button button-primary" type="submit" id="submitBtn" hidden>Invia segnalazione</button>
+          </div>
         </form>
         <p id="formMessage" class="form-message" role="status"></p>
       </section>
 
+      <!-- MAPPA / SEGNALAZIONI PUBBLICHE -->
+      <section id="mappa" class="section map-section" aria-labelledby="map-title">
+        <div class="section-heading">
+          <p class="kicker">Sulla mappa</p>
+          <h2 id="map-title">Le segnalazioni della città.</h2>
+          <p>Una panoramica delle pratiche aperte per categoria. La mappa interattiva georeferenziata arriverà con l'integrazione PostGIS.</p>
+        </div>
+        <div class="city-board" id="cityBoard" aria-live="polite"></div>
+      </section>
+
+      <!-- LE MIE SEGNALAZIONI -->
+      <section id="pratiche" class="section mine-panel" aria-labelledby="mine-title">
+        <div class="section-heading">
+          <p class="kicker">Fascicolo cittadino</p>
+          <h2 id="mine-title">Le mie segnalazioni.</h2>
+          <p>Accedi con SPID o CIE per vedere le pratiche che hai inviato e il loro stato.</p>
+        </div>
+        <div id="mineList" class="mine-list" aria-live="polite"></div>
+      </section>
+
+      <!-- TRACCIA PRATICA -->
+      <section id="traccia" class="section track-panel" aria-labelledby="track-title">
+        <div class="section-heading">
+          <p class="kicker">Stato pratica</p>
+          <h2 id="track-title">Traccia una segnalazione.</h2>
+          <p>Hai un codice pratica? Controlla lo stato senza effettuare l'accesso.</p>
+        </div>
+        <form id="trackForm" class="track-form">
+          <label class="wide">Codice pratica
+            <input name="code" placeholder="Es. FARO-2026-001" required />
+          </label>
+          <button class="button button-primary" type="submit">Cerca</button>
+        </form>
+        <div id="trackResult" class="track-result" aria-live="polite"></div>
+      </section>
+
+      <!-- BACK OFFICE -->
       <section id="fascicolo" class="section admin-panel" aria-labelledby="admin-title">
         <div class="section-heading">
-          <p class="kicker">Back office</p>
+          <p class="kicker">Back office comunale</p>
           <h2 id="admin-title">Gestione multiutente delle pratiche.</h2>
-          <p>Demo per operatori e amministratori: filtra, assegna e aggiorna lo stato delle segnalazioni.</p>
+          <p>Demo per operatori e amministratori: filtra per stato, assegna all'ufficio competente e aggiorna l'avanzamento.</p>
         </div>
         <div class="admin-tools">
-          <label>Ruolo<select id="adminRole"><option>URP - Il Faro</option><option>Manutenzioni</option><option>Polizia Municipale</option><option>Ambiente</option><option>Servizi cimiteriali</option></select></label>
-          <label>Stato<select id="statusFilter"><option value="">Tutte</option><option>Ricevuta</option><option>In lavorazione</option><option>Risolta</option></select></label>
+          <label>Ufficio
+            <select id="adminRole">
+              <option>URP - Il Faro</option>
+              <option>Manutenzioni</option>
+              <option>Polizia Municipale</option>
+              <option>Ambiente</option>
+              <option>Servizi cimiteriali</option>
+            </select>
+          </label>
+          <label>Stato
+            <select id="statusFilter">
+              <option value="">Tutte</option>
+              <option>Ricevuta</option>
+              <option>In lavorazione</option>
+              <option>Risolta</option>
+            </select>
+          </label>
           <div class="counter"><span id="totalReports">0</span><small>pratiche</small></div>
         </div>
         <div id="reportsList" class="reports-list" aria-live="polite"></div>
       </section>
     </main>
 
+    <!-- MODALE LOGIN SPID / CIE -->
+    <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle" hidden>
+      <div class="modal-card">
+        <button class="modal-close" type="button" aria-label="Chiudi" data-action="close-login">✕</button>
+        <p class="kicker">Accesso al portale</p>
+        <h2 id="loginTitle">Entra con la tua identità digitale</h2>
+        <div class="login-methods">
+          <button class="login-method spid" type="button" data-method="spid">
+            <span class="lm-title"><span class="spid-glyph" aria-hidden="true">✦</span> Entra con SPID</span>
+            <span class="lm-desc">Sistema Pubblico di Identità Digitale</span>
+          </button>
+          <div class="idp-list" id="idpList" hidden></div>
+          <button class="login-method cie" type="button" data-method="cie">
+            <span class="lm-title">🪪 Entra con CIE</span>
+            <span class="lm-desc">Carta di Identità Elettronica</span>
+          </button>
+        </div>
+        <p class="login-note">Ambiente dimostrativo: nessuna credenziale reale viene richiesta o trasmessa. In produzione il flusso userà gli Identity Provider accreditati AgID.</p>
+      </div>
+    </div>
+
     <nav class="mobile-tabbar" aria-label="Navigazione mobile">
       <a href="#home">Home</a>
       <a href="#segnala">Segnala</a>
-      <a href="#fascicolo">Pratiche</a>
+      <a href="#pratiche">Pratiche</a>
+      <a href="#traccia">Traccia</a>
     </nav>
 
     <footer class="footer">
-      <strong>Il Faro di Canicattì</strong>
-      <span>Web app civica ispirata al movimento Controcorrente.</span>
+      <div>
+        <strong>Il Faro di Canicattì</strong>
+        <span>Portale civico per le segnalazioni cittadine. Identità Controcorrente.</span>
+      </div>
+      <div class="footer-legal">
+        <a href="#segnala">Accessibilità</a>
+        <a href="#traccia">Privacy</a>
+        <span>© 2026 Il Faro di Canicattì</span>
+      </div>
     </footer>
+
     <script type="module" src="src/main.js"></script>
   </body>
 </html>
