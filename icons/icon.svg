@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Il Faro di Canicattì Controcorrente">
+  <rect width="512" height="512" rx="96" fill="#0b0b0f"/>
+  <circle cx="256" cy="256" r="216" fill="#d31018"/>
+  <path d="M72 330c74-62 128-62 196 0 52 46 100 50 172 12-56 88-152 128-252 92-62-22-102-60-116-104Z" fill="#ffc400"/>
+  <path d="M66 356c62-78 140-92 218-34 54 40 94 42 166 8-64 58-134 73-210 42-75-31-115-24-174 36Z" fill="#f26a00" opacity=".95"/>
+  <path d="M254 104 338 330H170l84-226Z" fill="#fff"/>
+  <path d="M254 150 296 330h-84l42-180Z" fill="#ffc400"/>
+  <circle cx="254" cy="228" r="24" fill="#d31018"/>
+  <text x="256" y="392" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="46" fill="#fff" letter-spacing="2">FARO</text>
+</svg>

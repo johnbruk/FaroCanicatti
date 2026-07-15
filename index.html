@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#d31018" />
+    <meta name="description" content="Il Faro di Canicattì: web app civica ispirata all'identità Controcorrente per raccogliere segnalazioni cittadine." />
+    <title>Il Faro di Canicattì | Controcorrente</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <header class="cc-header">
+      <a class="cc-brand" href="#home" aria-label="Il Faro di Canicattì Controcorrente">
+        <img src="icons/icon.svg" alt="" />
+        <span><strong>Il Faro</strong><small>Canicattì • Controcorrente</small></span>
+      </a>
+      <button class="cc-menu" type="button" aria-label="Apri menu">☰</button>
+      <nav class="cc-nav" aria-label="Navigazione principale">
+        <a href="#segnala">Segnala</a>
+        <a href="#fari">Fari attivi</a>
+        <a href="#fascicolo">Fascicolo</a>
+        <a class="nav-cta" href="#segnala">Apri un faro</a>
+      </nav>
+    </header>
+
+    <main id="home">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="kicker">Lottare x Restare • Canicattì</p>
+          <h1>Accendiamo un faro sulle segnalazioni della città.</h1>
+          <p>Una web app civica, veloce da smartphone, per raccogliere disservizi, anomalie e proposte dei cittadini con un flusso semplice e tracciabile.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#segnala">Invia segnalazione</a>
+            <a class="button button-ghost" href="#fascicolo">Area amministratori</a>
+          </div>
+        </div>
+        <div class="hero-badge" aria-label="Identità Controcorrente">
+          <span>CONTRO</span>
+          <strong>CORRENTE</strong>
+          <em>Il Faro di Canicattì</em>
+        </div>
+      </section>
+
+      <section id="fari" class="section manifesto">
+        <div>
+          <p class="kicker">La nostra missione</p>
+          <h2>Un portale cittadino per non lasciare nessuna segnalazione al buio.</h2>
+        </div>
+        <p>Il layout riprende l'energia visiva di Controcorrente: contrasti netti, rosso, giallo, arancio, onde grafiche e inviti all'azione immediati. La struttura resta pensata per diventare un portale completo con login, database e gestione multiutente.</p>
+      </section>
+
+      <section class="section categories" aria-labelledby="choose-title">
+        <div class="section-heading">
+          <p class="kicker">Apri un faro</p>
+          <h2 id="choose-title">Cosa vuoi segnalare?</h2>
+          <p>Scegli una categoria: il modulo si precompila e puoi inviare la pratica anche da smartphone.</p>
+        </div>
+        <div class="category-grid" id="categoryGrid">
+          <button class="category-card" type="button" data-category="Manutenzione Strade"><span>🛣️</span><strong>Manutenzione Strade</strong><small>Buche, marciapiedi, segnaletica</small></button>
+          <button class="category-card" type="button" data-category="Pulizia della Città"><span>🧹</span><strong>Pulizia della Città</strong><small>Rifiuti, decoro, discariche</small></button>
+          <button class="category-card" type="button" data-category="Arredo Urbano"><span>🚏</span><strong>Arredo Urbano</strong><small>Panchine, fermate, spazi pubblici</small></button>
+          <button class="category-card" type="button" data-category="Verde Pubblico"><span>🌳</span><strong>Verde Pubblico</strong><small>Parchi, alberi, aree gioco</small></button>
+          <button class="category-card" type="button" data-category="Cimiteri"><span>🕯️</span><strong>Cimiteri</strong><small>Servizi e manutenzione</small></button>
+          <button class="category-card" type="button" data-category="Veicoli Abbandonati"><span>🚗</span><strong>Veicoli Abbandonati</strong><small>Sicurezza e viabilità</small></button>
+          <button class="category-card highlight" type="button" data-category="Blackout Elettrico"><span>⚡</span><strong>Blackout Elettrico</strong><small>Illuminazione e guasti urgenti</small></button>
+        </div>
+      </section>
+
+      <section id="segnala" class="section report-panel" aria-labelledby="form-title">
+        <div class="section-heading">
+          <p class="kicker">Segnalazione cittadina</p>
+          <h2 id="form-title">Raccontaci cosa non va.</h2>
+          <p>Allega foto se disponibili e indica un riferimento preciso: riceverai un codice pratica dimostrativo.</p>
+        </div>
+        <form id="reportForm" class="report-form">
+          <label>Categoria<select name="category" required><option value="">Seleziona</option><option>Manutenzione Strade</option><option>Pulizia della Città</option><option>Arredo Urbano</option><option>Verde Pubblico</option><option>Cimiteri</option><option>Veicoli Abbandonati</option><option>Blackout Elettrico</option></select></label>
+          <label>Indirizzo completo<input name="address" required placeholder="Via, civico, contrada o riferimento" /></label>
+          <label class="wide">Descrizione<textarea name="description" required minlength="20" placeholder="Descrivi il problema, il punto preciso e ogni dettaglio utile"></textarea></label>
+          <label>Nome e cognome<input name="name" autocomplete="name" required placeholder="Mario Rossi" /></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required placeholder="nome@email.it" /></label>
+          <label>Priorità<select name="priority"><option>Ordinaria</option><option>Alta</option><option>Urgente</option></select></label>
+          <label>Foto o allegato<input name="attachment" type="file" accept="image/*,.pdf" /></label>
+          <button class="button button-primary wide" type="submit">Invia e accendi il faro</button>
+        </form>
+        <p id="formMessage" class="form-message" role="status"></p>
+      </section>
+
+      <section id="fascicolo" class="section admin-panel" aria-labelledby="admin-title">
+        <div class="section-heading">
+          <p class="kicker">Back office</p>
+          <h2 id="admin-title">Gestione multiutente delle pratiche.</h2>
+          <p>Demo per operatori e amministratori: filtra, assegna e aggiorna lo stato delle segnalazioni.</p>
+        </div>
+        <div class="admin-tools">
+          <label>Ruolo<select id="adminRole"><option>URP - Il Faro</option><option>Manutenzioni</option><option>Polizia Municipale</option><option>Ambiente</option><option>Servizi cimiteriali</option></select></label>
+          <label>Stato<select id="statusFilter"><option value="">Tutte</option><option>Ricevuta</option><option>In lavorazione</option><option>Risolta</option></select></label>
+          <div class="counter"><span id="totalReports">0</span><small>pratiche</small></div>
+        </div>
+        <div id="reportsList" class="reports-list" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <nav class="mobile-tabbar" aria-label="Navigazione mobile">
+      <a href="#home">Home</a>
+      <a href="#segnala">Segnala</a>
+      <a href="#fascicolo">Pratiche</a>
+    </nav>
+
+    <footer class="footer">
+      <strong>Il Faro di Canicattì</strong>
+      <span>Web app civica ispirata al movimento Controcorrente.</span>
+    </footer>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
