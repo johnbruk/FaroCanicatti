@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+
+# Build and distribution output
+dist/
+build/
+release/*.zip
+release/*.tar
+release/*.tar.gz
+release/*.tgz
+*.zip
+*.pdf
+
+# Local databases and generated data
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+
+# Generated caches
+.cache/
+.parcel-cache/
+.vite/
+coverage/
