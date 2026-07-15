@@ -2,6 +2,38 @@
 
 Questo documento descrive l'architettura consigliata per trasformare il prototipo statico in un portale cittadino completo, accessibile a cittadini registrati, operatori comunali e amministratori multiufficio.
 
+## Stato attuale (implementato)
+
+Il progetto non è più "solo HTML": ha già tre livelli.
+
+```text
+Frontend (PWA statica)            Backend API                 Database
+─────────────────────            ─────────────               ────────
+index.html, src/*.js/css   ──►   server/ (Express)   ──►   PostgreSQL
+- wizard segnalazione            - /api/reports              - categories
+- foto da fotocamera             - /api/categories           - users
+- posizione Google Maps          - /api/auth/session         - reports
+- SPID/CIE (simulato)            - storico stati             - report_status_history
+- src/api.js (client)            CORS per il frontend
+```
+
+- **Frontend**: PWA statica (nessun framework), installabile e mobile-first,
+  pensata per l'uso in strada (fotocamera + Google Maps + GPS). Funziona con
+  `localStorage` e, quando l'API è configurata, tramite `src/api.js`.
+- **Backend**: API REST Node.js/Express in `server/`, testata end-to-end.
+- **Database**: PostgreSQL con schema versionato (`server/schema.sql`), migrazione e seed.
+- **Deploy**: il frontend è su GitHub Pages (solo statico); l'API+DB richiedono un host dedicato.
+
+### Decisioni aperte (da concordare)
+
+1. **Framework frontend**: restare su HTML/JS vanilla (zero build, ottimo per
+   Pages) oppure evolvere verso **Next.js/React** o **Astro/Svelte** per un repo
+   grande e componenti riutilizzabili. Impatta hosting e complessità.
+2. **Hosting backend**: dove pubblicare API + PostgreSQL (Render, Railway,
+   Fly.io, Supabase, VPS). Necessario per attivare registrazione utenti reale.
+3. **SPID/CIE reale**: accreditamento AgID + flusso SAML (sostituisce la sessione simulata).
+4. **Allegati**: object storage S3-compatibile con URL firmati per le foto.
+
 ## Obiettivi
 
 - Gestire registrazione e autenticazione degli utenti con ruoli differenziati.

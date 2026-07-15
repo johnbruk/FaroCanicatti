@@ -25,7 +25,7 @@ JSON.parse(fs.readFileSync(path.join(process.cwd(), 'manifest.webmanifest'), 'ut
 
 // I file JS (moduli ES inclusi) vengono validati con `node --check`,
 // che comprende la sintassi import/export a differenza di `new Function`.
-const jsFiles = ['src/main.js', 'src/auth.js', 'service-worker.js', 'scripts/serve-static-app.js'];
+const jsFiles = ['src/main.js', 'src/auth.js', 'src/api.js', 'service-worker.js', 'scripts/serve-static-app.js'];
 for (const file of jsFiles) {
   execFileSync(process.execPath, ['--check', path.join(process.cwd(), file)], { stdio: 'pipe' });
 }

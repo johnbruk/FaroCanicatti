@@ -110,32 +110,78 @@ categoryGrid.addEventListener('click', (event) => {
 const address = $('#address');
 const latEl = $('#lat');
 const lngEl = $('#lng');
-const mapPin = $('#mapPin');
+const mapFrame = $('#mapFrame');
+const mapEmpty = $('#mapEmpty');
 const mapHint = $('#mapHint');
+const mapsLink = $('#mapsLink');
+const geoBtn = $('#geoBtn');
+const geoBtnLabel = '<span aria-hidden="true">📍</span> Usa la mia posizione';
 
-function placePin(text) {
-  mapPin.hidden = false;
-  mapPin.style.left = `${25 + Math.random() * 50}%`;
-  mapPin.style.top = `${25 + Math.random() * 50}%`;
-  mapHint.textContent = text;
+// Mostra la posizione su Google Maps (embed q= senza chiave API).
+function showMap(query) {
+  const q = encodeURIComponent(query);
+  mapFrame.src = `https://maps.google.com/maps?q=${q}&z=17&hl=it&output=embed`;
+  mapFrame.hidden = false;
+  mapEmpty.hidden = true;
+  mapsLink.hidden = false;
+  mapsLink.href = `https://www.google.com/maps?q=${q}`;
 }
 
-$('#geoBtn').addEventListener('click', () => {
-  if (!navigator.geolocation) { mapHint.textContent = 'Geolocalizzazione non disponibile su questo dispositivo.'; return; }
-  mapHint.textContent = 'Rilevamento posizione in corso…';
+function resetMap() {
+  mapFrame.hidden = true; mapFrame.removeAttribute('src');
+  mapEmpty.hidden = false;
+  mapsLink.hidden = true;
+  mapHint.textContent = 'La mappa apparirà qui dopo aver preso la posizione o inserito l\'indirizzo.';
+}
+
+geoBtn.addEventListener('click', () => {
+  if (!navigator.geolocation) { mapHint.textContent = 'Geolocalizzazione non disponibile: inserisci l\'indirizzo qui sotto.'; return; }
+  geoBtn.disabled = true;
+  geoBtn.innerHTML = '<span aria-hidden="true">⏳</span> Rilevamento posizione…';
   navigator.geolocation.getCurrentPosition(
     (pos) => {
-      latEl.value = pos.coords.latitude.toFixed(6);
-      lngEl.value = pos.coords.longitude.toFixed(6);
-      if (!address.value) address.value = `Posizione rilevata (${latEl.value}, ${lngEl.value})`;
-      placePin(`Posizione acquisita: ${latEl.value}, ${lngEl.value}`);
+      const lat = pos.coords.latitude.toFixed(6);
+      const lng = pos.coords.longitude.toFixed(6);
+      latEl.value = lat; lngEl.value = lng;
+      if (!address.value.trim()) address.value = `Posizione GPS (${lat}, ${lng})`;
+      showMap(`${lat},${lng}`);
+      geoBtn.disabled = false;
+      geoBtn.innerHTML = '<span aria-hidden="true">✅</span> Posizione presa — tocca per aggiornare';
     },
-    () => { mapHint.textContent = 'Permesso di geolocalizzazione negato. Inserisci l\'indirizzo manualmente.'; }
+    () => {
+      geoBtn.disabled = false;
+      geoBtn.innerHTML = geoBtnLabel;
+      mapHint.textContent = 'Non riusciamo a leggere la posizione. Attiva il GPS o scrivi l\'indirizzo qui sotto.';
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
   );
 });
 
+// Digitando un indirizzo, aggiorna la mappa (se non c'è già una posizione GPS).
+let addrTimer;
 address.addEventListener('input', () => {
-  if (address.value.trim().length > 3) placePin(`Riferimento: ${address.value}`);
+  clearTimeout(addrTimer);
+  const v = address.value.trim();
+  if (latEl.value || v.length < 4) return;
+  addrTimer = setTimeout(() => showMap(`${v}, Canicattì`), 600);
+});
+
+// Anteprima della foto scattata/caricata.
+const attachment = $('#attachment');
+const photoPreview = $('#photoPreview');
+attachment.addEventListener('change', () => {
+  const file = attachment.files && attachment.files[0];
+  if (file && file.type.startsWith('image/')) {
+    photoPreview.querySelector('img').src = URL.createObjectURL(file);
+    photoPreview.hidden = false;
+  } else {
+    photoPreview.hidden = true;
+  }
+});
+$('#photoRemove').addEventListener('click', () => {
+  attachment.value = '';
+  photoPreview.querySelector('img').removeAttribute('src');
+  photoPreview.hidden = true;
 });
 
 /* ---------------------------------------------------------------------------
@@ -254,7 +300,10 @@ form.addEventListener('submit', (event) => {
   saveReports(reports);
   form.reset();
   categoryValue.value = ''; subcategory.innerHTML = ''; subWrap.hidden = true;
-  latEl.value = ''; lngEl.value = ''; mapPin.hidden = true;
+  latEl.value = ''; lngEl.value = '';
+  resetMap();
+  geoBtn.disabled = false; geoBtn.innerHTML = geoBtnLabel;
+  photoPreview.hidden = true; photoPreview.querySelector('img').removeAttribute('src');
   categoryGrid.querySelectorAll('.category-card').forEach((el) => { el.classList.remove('is-selected'); el.setAttribute('aria-checked', 'false'); });
   formMessage.textContent = `✅ Segnalazione inviata. Codice pratica: ${report.id}`;
   showStep(1);
