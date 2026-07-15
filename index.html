@@ -12,9 +12,16 @@
   <body>
     <a class="skip-link" href="#segnala">Salta al contenuto</a>
 
+    <div class="gov-bar">
+      <div class="gov-bar-inner">
+        <span class="gov-bar-brand"><span class="gov-dot" aria-hidden="true"></span> Portale civico di Canicattì</span>
+        <span class="gov-bar-note">Ambiente dimostrativo · progetto Controcorrente</span>
+      </div>
+    </div>
+
     <header class="cc-header">
       <a class="cc-brand" href="#home" aria-label="Il Faro 1 di Canicattì — Controcorrente">
-        <img src="icons/controcorrente.svg" alt="" width="48" height="48" />
+        <img src="icons/logo02.png" alt="" width="48" height="48" onerror="this.onerror=null;this.src='icons/controcorrente.svg'" />
         <span><strong>Il Faro 1</strong><small>di Canicattì • Controcorrente</small></span>
       </a>
       <button class="cc-menu" type="button" aria-label="Apri menu" aria-expanded="false">☰</button>
@@ -50,7 +57,7 @@
           </dl>
         </div>
         <figure class="hero-figure">
-          <img src="icons/controcorrente.svg" alt="Logo Controcorrente — Il Faro 1 di Canicattì" width="320" height="320" />
+          <img src="icons/logo02.png" alt="Logo Controcorrente — Il Faro 1 di Canicattì" width="320" height="320" onerror="this.onerror=null;this.src='icons/controcorrente.svg'" />
         </figure>
       </section>
 
@@ -99,19 +106,21 @@
           <!-- STEP 2: DOVE -->
           <fieldset class="wizard-panel" data-panel="2">
             <legend>Dove si trova il problema?</legend>
-            <div class="locate">
-              <label class="wide">Indirizzo o riferimento
-                <input name="address" id="address" placeholder="Via, civico, contrada o punto di riferimento" required />
-              </label>
-              <button class="button button-ghost dark" type="button" id="geoBtn">
-                <span aria-hidden="true">📍</span> Usa la mia posizione
-              </button>
-            </div>
+            <p class="step-help">Sei sul posto? Tocca il pulsante: prendiamo la tua posizione GPS e la mostriamo sulla mappa.</p>
+            <button class="button button-primary geo-cta" type="button" id="geoBtn">
+              <span aria-hidden="true">📍</span> Usa la mia posizione
+            </button>
             <div class="map-preview" id="mapPreview" aria-live="polite">
-              <div class="map-grid" aria-hidden="true"></div>
-              <div class="map-pin" id="mapPin" hidden>📍</div>
-              <p class="map-hint" id="mapHint">La posizione apparirà qui dopo aver inserito l'indirizzo o usato la geolocalizzazione.</p>
+              <iframe id="mapFrame" title="Mappa della posizione della segnalazione" loading="lazy" referrerpolicy="no-referrer-when-downgrade" hidden></iframe>
+              <div class="map-empty" id="mapEmpty">
+                <span aria-hidden="true">🗺️</span>
+                <p id="mapHint">La mappa apparirà qui dopo aver preso la posizione o inserito l'indirizzo.</p>
+              </div>
             </div>
+            <a id="mapsLink" class="maps-link" href="#" target="_blank" rel="noopener" hidden>Apri in Google Maps ↗</a>
+            <label class="wide">Indirizzo o riferimento
+              <input name="address" id="address" inputmode="text" placeholder="Via, civico, contrada o punto di riferimento" required />
+            </label>
             <input type="hidden" name="lat" id="lat" />
             <input type="hidden" name="lng" id="lng" />
           </fieldset>
@@ -119,21 +128,28 @@
           <!-- STEP 3: COSA -->
           <fieldset class="wizard-panel" data-panel="3">
             <legend>Descrivi la situazione</legend>
+            <div class="photo-field">
+              <label class="photo-drop" for="attachment">
+                <span class="photo-icon" aria-hidden="true">📷</span>
+                <span class="photo-text">Scatta o carica una foto</span>
+                <small>Una foto aiuta a capire e risolvere più in fretta</small>
+              </label>
+              <input id="attachment" name="attachment" type="file" accept="image/*" capture="environment" />
+              <figure class="photo-preview" id="photoPreview" hidden>
+                <img alt="Anteprima della foto allegata" />
+                <button type="button" class="photo-remove" id="photoRemove" aria-label="Rimuovi foto">✕</button>
+              </figure>
+            </div>
             <label class="wide">Descrizione
               <textarea name="description" id="description" minlength="20" required placeholder="Descrivi il problema, il punto preciso e ogni dettaglio utile (almeno 20 caratteri)"></textarea>
             </label>
-            <div class="two-col">
-              <label>Priorità
-                <select name="priority">
-                  <option>Ordinaria</option>
-                  <option>Alta</option>
-                  <option>Urgente</option>
-                </select>
-              </label>
-              <label>Foto o allegato
-                <input name="attachment" type="file" accept="image/*,.pdf" />
-              </label>
-            </div>
+            <label>Priorità
+              <select name="priority">
+                <option>Ordinaria</option>
+                <option>Alta</option>
+                <option>Urgente</option>
+              </select>
+            </label>
           </fieldset>
 
           <!-- STEP 4: CHI -->
@@ -259,14 +275,34 @@
     </nav>
 
     <footer class="footer">
-      <div>
-        <strong>Il Faro di Canicattì</strong>
-        <span>Portale civico per le segnalazioni cittadine. Identità Controcorrente.</span>
+      <div class="footer-top">
+        <div class="footer-brand">
+          <img src="icons/logo02.png" alt="" width="52" height="52" onerror="this.onerror=null;this.src='icons/controcorrente.svg'" />
+          <div>
+            <strong>Il Faro 1 di Canicattì</strong>
+            <span>Portale civico per le segnalazioni dei cittadini. Identità Controcorrente — Lottare x Restare.</span>
+          </div>
+        </div>
+        <nav class="footer-cols" aria-label="Link del portale">
+          <div>
+            <h3>Il portale</h3>
+            <a href="#segnala">Invia una segnalazione</a>
+            <a href="#mappa">Mappa delle segnalazioni</a>
+            <a href="#pratiche">Le mie segnalazioni</a>
+            <a href="#traccia">Traccia una pratica</a>
+          </div>
+          <div>
+            <h3>Informazioni</h3>
+            <a href="#home">Come funziona</a>
+            <a href="#segnala">Accessibilità</a>
+            <a href="#traccia">Privacy e trattamento dati</a>
+            <a href="#fascicolo">Area operatori</a>
+          </div>
+        </nav>
       </div>
-      <div class="footer-legal">
-        <a href="#segnala">Accessibilità</a>
-        <a href="#traccia">Privacy</a>
-        <span>© 2026 Il Faro di Canicattì</span>
+      <div class="footer-bottom">
+        <span>© 2026 Il Faro 1 di Canicattì</span>
+        <span class="footer-demo">Ambiente dimostrativo — i dati inseriti restano su questo dispositivo.</span>
       </div>
     </footer>
 

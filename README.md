@@ -1,61 +1,92 @@
-# Il Faro di Canicattì
+# Il Faro 1 di Canicattì — Centro Segnalazioni
 
-Portale cittadino web/PWA per raccogliere segnalazioni dei cittadini e offrire una prima area di gestione multiutente per amministratori e uffici comunali.
+Portale civico (web + web app installabile) del movimento **Controcorrente** per
+raccogliere e gestire le segnalazioni dei cittadini di Canicattì: disservizi,
+anomalie e proposte. Design chiaro e istituzionale su pagine bianche, con
+accesso **SPID / CIE** e tracciamento delle pratiche.
 
-## Funzionalità incluse
+🌐 **Online:** https://johnbruk.github.io/FaroCanicatti/ (deploy automatico da `main` via GitHub Pages)
 
-- Landing page responsive del portale "Il Faro di Canicattì".
-- Form cittadino per inviare segnalazioni con categoria, luogo, descrizione, priorità e allegato.
-- Codice pratica automatico e salvataggio demo in `localStorage`.
-- Dashboard amministrativa con filtro per stato, assegnazione al ruolo corrente e avanzamento pratica.
-- Manifest PWA, icona e service worker per installabilità e cache offline degli asset principali.
+---
+
+## Struttura del portale
+
+### Struttura dei file
+
+```
+FaroCanicatti/
+├── index.html                 # Pagina unica del portale (struttura + sezioni)
+├── manifest.webmanifest       # Configurazione PWA (nome, icona, tema, installabilità)
+├── service-worker.js          # Cache offline degli asset → app installabile
+├── icons/
+│   └── controcorrente.svg     # Logo Controcorrente "Il Faro 1" (header, hero, icona app)
+├── src/
+│   ├── main.js                # Logica dell'app: wizard, fascicolo, tracciamento, back office
+│   ├── auth.js                # Autenticazione SPID/CIE (simulata, pronta per l'integrazione reale)
+│   └── styles.css             # Design system chiaro/istituzionale (identità Controcorrente)
+├── scripts/
+│   ├── serve-static-app.js    # Server statico locale (npm start)
+│   └── validate-static-app.js # Validazione/test dei file (npm test / npm run build)
+├── docs/
+│   └── ARCHITECTURE.md        # Architettura target: backend, database, roadmap
+└── .github/workflows/pages.yml# CI: deploy su GitHub Pages ad ogni push su main
+```
+
+### Struttura funzionale (sezioni della pagina)
+
+| Sezione | Ancora | A cosa serve |
+|---|---|---|
+| **Home / Hero** | `#home` | Presentazione, statistiche, accesso rapido a "Segnala" e "Traccia" |
+| **Come funziona** | — | I 3 passi: accedi → descrivi e localizza → segui la pratica |
+| **Nuova segnalazione** | `#segnala` | Wizard guidato in 5 passi (vedi sotto) |
+| **Mappa / Città** | `#mappa` | Board delle segnalazioni per categoria |
+| **Le mie segnalazioni** | `#pratiche` | Fascicolo del cittadino autenticato, con timeline degli stati |
+| **Traccia pratica** | `#traccia` | Ricerca di una pratica per codice, senza login |
+| **Back office** | `#fascicolo` | Gestione operatori: filtro stato, assegnazione ufficio, avanzamento |
+| **Login SPID/CIE** | modale | Scelta Identity Provider e autenticazione |
+
+### Flusso di segnalazione (wizard a 5 passi)
+
+1. **Categoria** — scelta tra 9 categorie (strade, rifiuti, illuminazione, verde, arredo, segnaletica, veicoli, cimiteri, acqua) con sotto-categoria.
+2. **Dove** — indirizzo + geolocalizzazione, con anteprima del punto.
+3. **Cosa** — descrizione, priorità, foto/allegato.
+4. **Chi** — dati da SPID/CIE (se autenticato) oppure come ospite; consenso privacy.
+5. **Riepilogo** — controllo finale e invio → **codice pratica** + timeline degli stati.
+
+### Moduli JavaScript
+
+- **`src/auth.js`** — interfaccia di autenticazione: `login()`, `logout()`, `getSession()`, `onChange()`, elenco `SPID_PROVIDERS`. Oggi simula il login SPID/CIE; l'interfaccia pubblica è identica a quella dell'integrazione reale, così il passaggio al backend accreditato AgID non tocca il resto dell'app.
+- **`src/main.js`** — stato dell'app e rendering: categorie, navigazione wizard, geolocalizzazione, fascicolo cittadino, tracciamento, board città, statistiche, back office. Persistenza demo su `localStorage` (in produzione: API + database).
+
+> ⚠️ **Stato attuale:** prototipo front-end. Login SPID/CIE **simulato** e dati salvati in `localStorage` del browser. L'architettura reale (API, PostgreSQL/PostGIS, storage allegati, SPID/CIE via SAML) è descritta in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+
+---
 
 ## Avvio locale
 
-Metodo più semplice, senza installare nulla: apri `index.html` con doppio click.
+Metodo più semplice: apri `index.html` con doppio click.
 
-Metodo opzionale se hai Node.js/npm:
-
-```bash
-npm run start
-```
-
-## Build
+Con Node.js installato (consigliato, per il service worker/PWA):
 
 ```bash
-npm run build
+npm start        # server statico su http://127.0.0.1:5173/
 ```
 
-## Pacchetto scaricabile
-
-Per creare un pacchetto ZIP pronto da condividere o scaricare:
+## Test / validazione
 
 ```bash
-npm run package
+npm test         # verifica presenza file, manifest valido, sintassi dei moduli JS
 ```
 
-Il file viene generato in `release/il-faro-canicatti-portale.zip`. Dopo averlo estratto, aprire `index.html` con doppio click. Se hai Node.js/npm puoi usare anche `npm run start`.
+## Pubblicazione
 
-## Anteprima locale passo passo
+Il sito è pubblicato automaticamente su **GitHub Pages** ad ogni push su `main`
+(workflow `.github/workflows/pages.yml`). Nessun passaggio manuale.
 
-Se non sai come scaricare o aprire il pacchetto, leggi `ANTEPRIMA_LOCALE.md`. Ora il metodo più semplice è aprire `index.html` con doppio click; `npm run start` resta solo un metodo opzionale se hai Node.js/npm.
+---
 
-## Pubblicazione su GitHub
+## Design
 
-Se vuoi caricare tutto su GitHub per scaricare più facilmente lo ZIP, segui `GITHUB_UPLOAD.md`. In questa copia locale non è configurato alcun remoto GitHub, quindi prima bisogna creare o collegare un repository remoto.
-
-## Se lo ZIP non esiste
-
-Se nel repository non trovi `release/il-faro-canicatti-portale.zip`, leggi `SE_ZIP_NON_ESISTE.md`. Puoi comunque aprire il sito direttamente facendo doppio click su `index.html`, senza usare lo ZIP.
-
-## Avvio senza npm, Node.js o Python
-
-Se Git Bash mostra `bash: npm: command not found`, puoi comunque aprire il portale facendo doppio click su `index.html`. Leggi `SENZA_NPM.md` per i passaggi dettagliati.
-
-## Direzione design
-
-Il layout usa una direzione visiva ispirata a Controcorrente: contrasti scuri, rosso, giallo e arancio, logo SVG testuale, call to action forti e navigazione mobile da web app.
-
-## Anteprima online
-
-Per vedere il portale online tramite GitHub Pages, leggi `GITHUB_PAGES_PREVIEW.md`. Dopo l'attivazione su GitHub, l'URL previsto è `https://johnbruk.github.io/FaroCanicatti/`.
+Identità **Controcorrente** (rosso, giallo, arancio, logo "Il Faro 1") declinata
+in chiave **istituzionale**: pagine bianche, molto spazio, accenti rossi, blu
+SPID ufficiale per l'accesso. Mobile-first e installabile come web app.

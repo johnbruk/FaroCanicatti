@@ -9,6 +9,7 @@
   "theme_color": "#d42e12",
   "lang": "it",
   "icons": [
+    { "src": "icons/logo02.png", "sizes": "2000x2000", "type": "image/png", "purpose": "any" },
     { "src": "icons/controcorrente.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
   ]
 }

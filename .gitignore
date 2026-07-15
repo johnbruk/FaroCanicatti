@@ -1,35 +1,30 @@
-# Dependencies
+# Dipendenze
 node_modules/
 
-# Build and distribution output
+# Output di build
 dist/
 build/
-release/*.zip
-release/*.tar
-release/*.tar.gz
-release/*.tgz
-*.zip
-*.pdf
 
-# Local databases and generated data
+# Database e dati generati in locale
 *.sqlite
 *.sqlite3
 *.db
 *.db-shm
 *.db-wal
 
-# Logs and temporary files
+# Log e file temporanei
 *.log
 *.tmp
 *.temp
 .DS_Store
 Thumbs.db
+
+# Variabili d'ambiente (segreti)
 .env
 .env.*
 !.env.example
 
-# Generated caches
+# Cache generate
 .cache/
-.parcel-cache/
 .vite/
 coverage/

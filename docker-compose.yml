@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: faro-postgres
+    environment:
+      POSTGRES_USER: faro
+      POSTGRES_PASSWORD: faro
+      POSTGRES_DB: faro_canicatti
+    ports:
+      - "5432:5432"
+    volumes:
+      - faro_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U faro -d faro_canicatti"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  faro_pgdata:
