@@ -11,8 +11,6 @@ const files = [
   'GITHUB_UPLOAD.md',
   'SE_ZIP_NON_ESISTE.md',
   'SENZA_NPM.md',
-  'COME_USARE_STANDALONE.md',
-  'PORTALE_STANDALONE.html',
   'package.json',
   'index.html',
   'manifest.webmanifest',
