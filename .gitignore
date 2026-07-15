@@ -4,6 +4,8 @@ node_modules/
 # Output di build
 dist/
 build/
+.next/
+out/
 
 # Database e dati generati in locale
 *.sqlite

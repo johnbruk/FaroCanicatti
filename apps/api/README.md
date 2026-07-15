@@ -16,7 +16,7 @@ Serve **Docker** (per PostgreSQL) e **Node.js 18+**.
 docker compose up -d db
 
 # 2. Installa le dipendenze dell'API
-cd server && npm install
+cd apps/api && npm install
 
 # 3. Crea le tabelle e i dati demo
 npm run setup        # = migrate + seed

@@ -14,6 +14,7 @@
  */
 
 function baseUrl() {
+  if (typeof document === 'undefined') return '';
   const meta = document.querySelector('meta[name="faro-api"]');
   return (window.__FARO_API_BASE__ || (meta && meta.content) || '').replace(/\/$/, '');
 }
