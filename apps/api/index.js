@@ -129,14 +129,22 @@ app.patch('/api/reports/:id/assign', wrap(async (req, res) => {
 
 // Sessione da SPID/CIE: registra/aggiorna l'utente autenticato.
 app.post('/api/auth/session', wrap(async (req, res) => {
-  const { id, displayName, email, method, provider } = req.body || {};
-  if (!id || !displayName) return res.status(400).json({ error: 'Dati identità incompleti.' });
+  const b = req.body || {};
+  if (!b.id || !b.displayName) return res.status(400).json({ error: 'Dati identità incompleti.' });
   await query(
-    `INSERT INTO users (id, display_name, email, method, provider) VALUES ($1,$2,$3,$4,$5)
-     ON CONFLICT (id) DO UPDATE SET display_name=EXCLUDED.display_name, email=EXCLUDED.email, method=EXCLUDED.method, provider=EXCLUDED.provider`,
-    [id, displayName, email || null, method || null, provider || null]
+    `INSERT INTO users (id, auth_method, verified, provider, display_name, first_name, last_name,
+       fiscal_number, id_card_number, address, city, cap, phone, email, pec)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+     ON CONFLICT (id) DO UPDATE SET auth_method=EXCLUDED.auth_method, verified=EXCLUDED.verified,
+       provider=EXCLUDED.provider, display_name=EXCLUDED.display_name, first_name=EXCLUDED.first_name,
+       last_name=EXCLUDED.last_name, fiscal_number=EXCLUDED.fiscal_number, id_card_number=EXCLUDED.id_card_number,
+       address=EXCLUDED.address, city=EXCLUDED.city, cap=EXCLUDED.cap, phone=EXCLUDED.phone,
+       email=EXCLUDED.email, pec=EXCLUDED.pec`,
+    [b.id, b.method || null, !!b.verified, b.provider || null, b.displayName, b.name || null, b.familyName || null,
+     b.fiscalNumber || null, b.idCardNumber || null, b.address || null, b.city || null, b.cap || null,
+     b.phone || null, b.email || null, b.pec || null]
   );
-  res.json({ id, displayName, email, method, provider });
+  res.json(b);
 }));
 
 const PORT = Number(process.env.PORT || 4000);

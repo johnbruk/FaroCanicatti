@@ -4,12 +4,48 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CATEGORIES } from '@/lib/categories';
 import { store } from '@/lib/store';
 import { api, isEnabled } from '@/lib/api';
-import { login as authLogin, logout as authLogout, onChange, SPID_PROVIDERS } from '@/lib/auth';
+import { login as authLogin, logout as authLogout, completeIdentity, onChange, SPID_PROVIDERS, SOCIAL_PROVIDERS } from '@/lib/auth';
 import { asset, BASE } from '@/lib/config';
 
 const STEPS = ['Categoria', 'Dove', 'Cosa', 'Chi', 'Riepilogo'];
 const STATUSES = ['Ricevuta', 'In lavorazione', 'Risolta'];
 const OFFICES = ['URP - Il Faro', 'Manutenzioni', 'Polizia Municipale', 'Ambiente', 'Servizi cimiteriali'];
+
+const IDENTITY_EMPTY = { firstName: '', lastName: '', idCardNumber: '', address: '', city: 'Canicattì', cap: '', phone: '', email: '', pec: '' };
+
+// Ritorna un messaggio d'errore se manca un campo obbligatorio (la PEC è facoltativa).
+function validateIdentity(d) {
+  if (!d.firstName.trim() || !d.lastName.trim()) return 'Inserisci nome e cognome.';
+  if (!d.idCardNumber.trim()) return 'Inserisci il numero della carta d\'identità.';
+  if (!d.address.trim() || !d.city.trim()) return 'Inserisci via e città.';
+  if (!/^\d{5}$/.test(d.cap.trim())) return 'Inserisci un CAP valido (5 cifre).';
+  if (!d.phone.trim()) return 'Inserisci un numero di telefono.';
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(d.email.trim())) return 'Inserisci un\'email valida.';
+  return null;
+}
+
+// Campi anagrafici riutilizzati per l'accesso social e per l'ospite.
+function IdentityFields({ data, set }) {
+  return (
+    <div className="identity-form">
+      <div className="two-col">
+        <label>Nome<input value={data.firstName} onChange={(e) => set('firstName', e.target.value)} autoComplete="given-name" placeholder="Mario" /></label>
+        <label>Cognome<input value={data.lastName} onChange={(e) => set('lastName', e.target.value)} autoComplete="family-name" placeholder="Rossi" /></label>
+      </div>
+      <label>Numero carta d'identità<input value={data.idCardNumber} onChange={(e) => set('idCardNumber', e.target.value)} placeholder="CA1234567" /></label>
+      <label className="wide">Via e numero civico<input value={data.address} onChange={(e) => set('address', e.target.value)} autoComplete="street-address" placeholder="Via Roma 1" /></label>
+      <div className="two-col">
+        <label>Città<input value={data.city} onChange={(e) => set('city', e.target.value)} autoComplete="address-level2" /></label>
+        <label>CAP<input value={data.cap} onChange={(e) => set('cap', e.target.value)} inputMode="numeric" maxLength={5} placeholder="92024" /></label>
+      </div>
+      <div className="two-col">
+        <label>Telefono<input value={data.phone} onChange={(e) => set('phone', e.target.value)} type="tel" autoComplete="tel" placeholder="333 1234567" /></label>
+        <label>Email<input value={data.email} onChange={(e) => set('email', e.target.value)} type="email" autoComplete="email" placeholder="nome@email.it" /></label>
+      </div>
+      <label>PEC <span className="opt">(facoltativa)</span><input value={data.pec} onChange={(e) => set('pec', e.target.value)} type="email" placeholder="nome@pec.it" /></label>
+    </div>
+  );
+}
 
 const statusClass = (s) => s.toLowerCase().replaceAll(' ', '-');
 const formatDate = (iso) => new Date(iso).toLocaleDateString('it-IT', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -45,14 +81,19 @@ export default function Portal() {
   const [description, setDescription] = useState('');
   const [priority, setPriority] = useState('Ordinaria');
   const [photo, setPhoto] = useState(null); // {name,url}
-  const [guestName, setGuestName] = useState('');
-  const [guestEmail, setGuestEmail] = useState('');
+  const [guestData, setGuestData] = useState(IDENTITY_EMPTY);
   const [privacy, setPrivacy] = useState(false);
   const [formMsg, setFormMsg] = useState('');
+  const [formOk, setFormOk] = useState(false);
+  const setGuest = (k, v) => setGuestData((p) => ({ ...p, [k]: v }));
 
   const [loginOpen, setLoginOpen] = useState(false);
   const [idpOpen, setIdpOpen] = useState(false);
   const [loginLoading, setLoginLoading] = useState(false);
+  const [idCardOpen, setIdCardOpen] = useState(false);
+  const [idCardData, setIdCardData] = useState(IDENTITY_EMPTY);
+  const [idCardMsg, setIdCardMsg] = useState('');
+  const setIdCard = (k, v) => setIdCardData((p) => ({ ...p, [k]: v }));
   const [navOpen, setNavOpen] = useState(false);
 
   const [adminRole, setAdminRole] = useState(OFFICES[0]);
@@ -74,6 +115,17 @@ export default function Portal() {
       navigator.serviceWorker.register(`${BASE}/sw.js`).catch(() => {});
     }
   }, []);
+
+  // Dopo l'accesso social, obbliga a completare i dati della carta d'identità.
+  useEffect(() => {
+    if (session?.needsIdCard) {
+      setIdCardData({ ...IDENTITY_EMPTY, firstName: session.name || '', lastName: session.familyName || '', email: session.email || '' });
+      setIdCardMsg('');
+      setIdCardOpen(true);
+    } else {
+      setIdCardOpen(false);
+    }
+  }, [session]);
 
   const stats = useMemo(() => ({
     total: reports.length,
@@ -132,12 +184,13 @@ export default function Portal() {
   }
 
   function validateStep(n) {
-    setFormMsg('');
+    setFormMsg(''); setFormOk(false);
     if (n === 1 && !category) { setFormMsg('Seleziona una categoria per continuare.'); return false; }
     if (n === 2 && address.trim().length < 4) { setFormMsg('Indica un indirizzo o usa la geolocalizzazione.'); return false; }
     if (n === 3 && description.trim().length < 20) { setFormMsg('La descrizione deve avere almeno 20 caratteri.'); return false; }
     if (n === 4) {
-      if (!session && guestEmail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(guestEmail)) { setFormMsg('Inserisci un\'email valida.'); return false; }
+      if (session?.needsIdCard) { setIdCardOpen(true); return false; }
+      if (!session) { const err = validateIdentity(guestData); if (err) { setFormMsg(err); return false; } }
       if (!privacy) { setFormMsg('È necessario accettare l\'informativa privacy.'); return false; }
     }
     return true;
@@ -157,21 +210,22 @@ export default function Portal() {
       category, subcategory, address,
       lat: coords?.lat || null, lng: coords?.lng || null,
       description, priority, attachmentName: photo?.name || '',
-      name: session ? session.displayName : (guestName || 'Cittadino'),
-      email: session ? session.email : guestEmail,
+      name: session ? session.displayName : `${guestData.firstName} ${guestData.lastName}`.trim(),
+      email: session ? session.email : guestData.email,
+      phone: session ? (session.phone || '') : guestData.phone,
       ownerId: session ? session.id : null
     };
     try {
       const report = await store.createReport(data);
-      setFormMsg(`✅ Segnalazione inviata. Codice pratica: ${report.id}`);
+      setFormMsg(`✅ Segnalazione inviata. Codice pratica: ${report.id}`); setFormOk(true);
       // reset
       setCategory(''); setCategoryId(''); setSubcategory(''); setAddress(''); setCoords(null);
       setMapQuery(''); setGeoLabel('📍 Usa la mia posizione'); setDescription(''); setPriority('Ordinaria');
-      setPhoto(null); setGuestName(''); setGuestEmail(''); setPrivacy(false);
+      setPhoto(null); setGuestData(IDENTITY_EMPTY); setPrivacy(false);
       setStep(1);
       await refresh();
     } catch (err) {
-      setFormMsg(`Errore nell'invio: ${err.message}`);
+      setFormMsg(`Errore nell'invio: ${err.message}`); setFormOk(false);
     }
   }
 
@@ -189,6 +243,15 @@ export default function Portal() {
     const s = await authLogin(method, idp);
     if (isEnabled()) { try { await api.saveSession(s); } catch { /* noop */ } }
     setLoginLoading(false); setLoginOpen(false); setIdpOpen(false);
+  }
+
+  function submitIdCard(e) {
+    e.preventDefault();
+    const err = validateIdentity(idCardData);
+    if (err) { setIdCardMsg(err); return; }
+    const s = completeIdentity(idCardData);
+    if (isEnabled() && s) { api.saveSession(s).catch(() => {}); }
+    setIdCardOpen(false);
   }
 
   async function track(e) {
@@ -212,51 +275,50 @@ export default function Portal() {
 
       <header className="cc-header">
         <a className="cc-brand" href="#home" aria-label="Il Faro 1 di Canicattì — Controcorrente">
-          <img src={asset('/icons/logo02.png')} alt="" width="48" height="48" />
+          <img src={asset('/icons/logo02.png')} alt="" width="64" height="64" />
           <span><strong>Il Faro 1</strong><small>di Canicattì • Controcorrente</small></span>
         </a>
-        <button className="cc-menu" type="button" aria-label="Apri menu" aria-expanded={navOpen}
-          onClick={() => setNavOpen((v) => !v)}>☰</button>
         <nav className={`cc-nav${navOpen ? ' open' : ''}`} aria-label="Navigazione principale" onClick={() => setNavOpen(false)}>
           <a href="#segnala">Segnala</a>
           <a href="#mappa">Mappa</a>
           <a href="#pratiche">Le mie segnalazioni</a>
           <a href="#traccia">Traccia pratica</a>
-          <div className="cc-auth">
-            {session ? (
-              <div className="user-chip">
-                <span className="user-avatar" aria-hidden="true">{session.name[0]}{session.familyName[0]}</span>
-                <span className="user-name">{session.displayName}</span>
-                <button className="user-logout" type="button" onClick={() => authLogout()} aria-label="Esci">Esci</button>
-              </div>
-            ) : (
-              <button className="button button-spid" type="button" onClick={openLogin}>
-                <span className="spid-glyph" aria-hidden="true">✦</span> Accedi con SPID / CIE
-              </button>
-            )}
-          </div>
         </nav>
+        <div className="cc-auth">
+          {session ? (
+            <div className="user-chip">
+              <span className="user-avatar" aria-hidden="true">{session.name[0]}{session.familyName[0]}</span>
+              <span className="user-name">{session.displayName}</span>
+              <button className="user-logout" type="button" onClick={() => authLogout()} aria-label="Esci">Esci</button>
+            </div>
+          ) : (
+            <button className="button button-spid" type="button" onClick={openLogin}>
+              <span className="spid-glyph" aria-hidden="true">✦</span> Accedi<span className="spid-label"> con SPID / CIE</span>
+            </button>
+          )}
+        </div>
+        <button className="cc-menu" type="button" aria-label="Apri menu" aria-expanded={navOpen}
+          onClick={() => setNavOpen((v) => !v)}>☰</button>
       </header>
 
       <main id="home">
-        <section className="hero">
-          <div className="hero-copy">
-            <p className="kicker">Lottare x Restare • Centro Segnalazioni</p>
-            <h1>Accendiamo un faro sulle segnalazioni della città.</h1>
-            <p>Il portale civico di Canicattì per inviare disservizi, anomalie e proposte in pochi passaggi. Accedi con SPID o CIE, allega foto, indica il punto sulla mappa e segui la tua pratica fino alla risoluzione.</p>
-            <div className="hero-actions">
-              <a className="button button-primary" href="#segnala">Invia una segnalazione</a>
-              <a className="button button-ghost" href="#traccia">Traccia una pratica</a>
-            </div>
-            <dl className="hero-stats" aria-label="Indicatori del portale">
-              <div><dt>Pratiche gestite</dt><dd>{stats.total}</dd></div>
-              <div><dt>Risolte</dt><dd>{stats.resolved}</dd></div>
-              <div><dt>Uffici collegati</dt><dd>5</dd></div>
-            </dl>
-          </div>
-          <figure className="hero-figure">
-            <img src={asset('/icons/logo02.png')} alt="Logo Controcorrente — Il Faro 1 di Canicattì" width="320" height="320" />
+        <section className="hero hero-centered">
+          <figure className="hero-logo-top">
+            <img src={asset('/icons/logo02.png')} alt="Logo Controcorrente — Il Faro di Canicattì" width="150" height="150" />
+            <figcaption>Il Faro di Canicattì</figcaption>
           </figure>
+          <p className="kicker">Lottare x Restare • Centro Segnalazioni</p>
+          <h1>Accendiamo un faro sulle segnalazioni della città.</h1>
+          <p>Il portale civico di Canicattì per inviare disservizi, anomalie e proposte in pochi passaggi. Accedi con SPID o CIE, allega foto, indica il punto sulla mappa e segui la tua pratica fino alla risoluzione.</p>
+          <div className="hero-actions">
+            <a className="button button-primary" href="#segnala">Invia una segnalazione</a>
+            <a className="button button-ghost" href="#traccia">Traccia una pratica</a>
+          </div>
+          <dl className="hero-stats" aria-label="Indicatori del portale">
+            <div><dt>Pratiche gestite</dt><dd>{stats.total}</dd></div>
+            <div><dt>Risolte</dt><dd>{stats.resolved}</dd></div>
+            <div><dt>Uffici collegati</dt><dd>5</dd></div>
+          </dl>
         </section>
 
         <section className="section howto" aria-labelledby="howto-title">
@@ -269,6 +331,16 @@ export default function Portal() {
             <li><span className="howto-num">2</span><strong>Descrivi e localizza</strong><p>Scegli la categoria, aggiungi foto e indica il punto preciso sulla mappa o con la geolocalizzazione.</p></li>
             <li><span className="howto-num">3</span><strong>Segui la pratica</strong><p>Ricevi un codice pratica e controlla lo stato di avanzamento fino alla risoluzione.</p></li>
           </ol>
+          <div className="howto-note">
+            <div className="note-card">
+              <strong>⏱️ Tempi di risposta</strong>
+              <p>Le segnalazioni sono prese in carico entro pochi giorni lavorativi. Riceverai gli aggiornamenti sullo stato della tua pratica.</p>
+            </div>
+            <div className="note-card note-warn">
+              <strong>🚨 In caso di emergenza</strong>
+              <p>Per pericoli immediati per persone o cose non usare il portale: chiama il <strong>112</strong> (Numero Unico Emergenze).</p>
+            </div>
+          </div>
         </section>
 
         {/* WIZARD */}
@@ -285,6 +357,8 @@ export default function Portal() {
               return <li key={n} className={n === step ? 'is-active' : n < step ? 'is-done' : ''}>{label}</li>;
             })}
           </ol>
+
+          <p className="wizard-progress" aria-hidden="true">Passo {step} di 5 · {STEPS[step - 1]}</p>
 
           <form className="wizard" onSubmit={submit} noValidate>
             {step === 1 && (
@@ -369,25 +443,24 @@ export default function Portal() {
                 {session ? (
                   <div className="identity-box">
                     <div className="identity-card">
-                      <span className="identity-badge">{session.method === 'cie' ? '🪪 CIE' : '✦ SPID'}</span>
+                      <span className="identity-badge">{session.method === 'cie' ? '🪪 CIE' : session.verified ? '✦ SPID' : '👤'}</span>
                       <div>
                         <strong>{session.displayName}</strong>
-                        <small>{session.fiscalNumber} • {session.email}</small>
-                        <small className="identity-provider">Autenticato con {session.provider} • {session.level}</small>
+                        <small>{session.fiscalNumber ? `${session.fiscalNumber} • ` : ''}{session.email}</small>
+                        <small className="identity-provider">
+                          {session.verified ? `Identità verificata • ${session.provider} • ${session.level}` : `Accesso ${session.provider} • identità dichiarata con carta d'identità`}
+                        </small>
                       </div>
                     </div>
-                    <p className="identity-note">La segnalazione sarà firmata con la tua identità digitale e la ritroverai nel tuo fascicolo.</p>
+                    <p className="identity-note">La segnalazione sarà firmata con la tua identità e la ritroverai nel tuo fascicolo.</p>
                   </div>
                 ) : (
                   <div className="identity-box">
                     <div className="identity-guest">
-                      <p>Accedi con <strong>SPID</strong> o <strong>CIE</strong> per firmare la segnalazione e seguirla nel tuo fascicolo, oppure prosegui come ospite.</p>
+                      <p>Hai <strong>SPID</strong> o <strong>CIE</strong>? Firmi in un tocco, senza compilare nulla. Altrimenti inserisci qui i tuoi dati per inviare la segnalazione.</p>
                       <button className="button button-spid" type="button" onClick={openLogin}><span className="spid-glyph" aria-hidden="true">✦</span> Accedi con SPID / CIE</button>
                     </div>
-                    <div className="two-col">
-                      <label>Nome e cognome<input value={guestName} onChange={(e) => setGuestName(e.target.value)} autoComplete="name" placeholder="Mario Rossi" /></label>
-                      <label>Email<input value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} type="email" autoComplete="email" placeholder="nome@email.it" /></label>
-                    </div>
+                    <IdentityFields data={guestData} set={setGuest} />
                   </div>
                 )}
                 <label className="consent">
@@ -407,7 +480,7 @@ export default function Portal() {
                   <div><dt>Descrizione</dt><dd>{description}</dd></div>
                   <div><dt>Priorità</dt><dd>{priority}</dd></div>
                   <div><dt>Allegato</dt><dd>{photo?.name || 'Nessuno'}</dd></div>
-                  <div><dt>Segnalante</dt><dd>{session ? session.displayName : (guestName || 'Cittadino')}{(session?.email || guestEmail) ? ` • ${session?.email || guestEmail}` : ''}</dd></div>
+                  <div><dt>Segnalante</dt><dd>{session ? session.displayName : (`${guestData.firstName} ${guestData.lastName}`.trim() || 'Cittadino')}{(session?.email || guestData.email) ? ` • ${session?.email || guestData.email}` : ''}</dd></div>
                 </div>
               </fieldset>
             )}
@@ -418,7 +491,7 @@ export default function Portal() {
               {step === 5 && <button className="button button-primary" type="submit">Invia segnalazione</button>}
             </div>
           </form>
-          {formMsg && <p className="form-message" role="status">{formMsg}</p>}
+          {formMsg && <p className={`form-message${formOk ? ' is-ok' : ''}`} role="status">{formMsg}</p>}
         </section>
 
         {/* MAPPA / BOARD */}
@@ -427,6 +500,11 @@ export default function Portal() {
             <p className="kicker">Sulla mappa</p>
             <h2 id="map-title">Le segnalazioni della città.</h2>
             <p>Una panoramica delle pratiche aperte per categoria. La mappa interattiva georeferenziata arriverà con l'integrazione PostGIS.</p>
+          </div>
+          <div className="status-legend" aria-label="Legenda degli stati">
+            <span className="badge ricevuta">Ricevuta</span>
+            <span className="badge in-lavorazione">In lavorazione</span>
+            <span className="badge risolta">Risolta</span>
           </div>
           <div className="city-board" aria-live="polite">
             {board.length ? board.map(([cat, list]) => {
@@ -539,6 +617,43 @@ export default function Portal() {
             )) : <p className="empty-state">Nessuna segnalazione corrisponde al filtro selezionato.</p>}
           </div>
         </section>
+
+        {/* FAQ */}
+        <section id="faq" className="section faq-section" aria-labelledby="faq-title">
+          <div className="section-heading">
+            <p className="kicker">Domande frequenti</p>
+            <h2 id="faq-title">Hai bisogno di aiuto?</h2>
+          </div>
+          <div className="faq-list">
+            <details><summary>Chi può inviare una segnalazione?</summary><p>Tutti i cittadini. Con SPID o CIE la segnalazione è firmata e la ritrovi nel tuo fascicolo; senza, puoi inviarla inserendo i tuoi dati.</p></details>
+            <details><summary>Cosa posso segnalare?</summary><p>Disservizi e anomalie su strade, rifiuti, illuminazione, verde, arredo urbano, segnaletica, veicoli abbandonati, cimiteri, acqua e fognature.</p></details>
+            <details><summary>Cosa NON va segnalato qui?</summary><p>Emergenze e pericoli immediati: in quei casi chiama il <strong>112</strong>. Il portale non sostituisce i numeri di emergenza.</p></details>
+            <details><summary>Come seguo la mia segnalazione?</summary><p>Ricevi un codice pratica (es. FARO-2026-001). Puoi controllare lo stato nella sezione <a href="#traccia">Traccia pratica</a> o nel tuo fascicolo se hai effettuato l'accesso.</p></details>
+            <details><summary>I miei dati sono al sicuro?</summary><p>I dati sono trattati solo per la gestione della segnalazione, secondo il GDPR. In questa versione dimostrativa restano sul tuo dispositivo.</p></details>
+          </div>
+        </section>
+
+        {/* CONTATTI / ISTITUZIONALE */}
+        <section id="contatti" className="section info-section" aria-labelledby="info-title">
+          <div className="section-heading">
+            <p className="kicker">Informazioni</p>
+            <h2 id="info-title">Contatti e trasparenza</h2>
+          </div>
+          <div className="info-grid">
+            <article className="info-card">
+              <h3>📞 URP — Il Faro</h3>
+              <p>Ufficio Relazioni con il Pubblico del Comune di Canicattì. Per assistenza sull'uso del portale e sullo stato delle pratiche.</p>
+            </article>
+            <article className="info-card">
+              <h3>♿ Accessibilità</h3>
+              <p>Il portale è progettato secondo le linee guida di accessibilità (WCAG 2.1 AA): navigazione da tastiera, contrasti adeguati, testi leggibili.</p>
+            </article>
+            <article className="info-card">
+              <h3>🔒 Privacy</h3>
+              <p>I dati personali sono trattati ai sensi del Regolamento UE 2016/679 (GDPR) esclusivamente per la gestione delle segnalazioni.</p>
+            </article>
+          </div>
+        </section>
       </main>
 
       {/* LOGIN MODAL */}
@@ -566,8 +681,37 @@ export default function Portal() {
                 <span className="lm-title">🪪 Entra con CIE</span>
                 <span className="lm-desc">Carta di Identità Elettronica</span>
               </button>
+              <div className="login-divider"><span>oppure accedi con</span></div>
+              <div className="social-list">
+                {SOCIAL_PROVIDERS.map((p) => (
+                  <button key={p.id} className={`social-btn social-${p.id}`} type="button" onClick={() => doLogin(p.id)}>
+                    <span className="social-mark" aria-hidden="true">{p.mark || p.name[0]}</span> {p.name}
+                  </button>
+                ))}
+              </div>
+              <p className="social-note">⚠️ Con Apple, Google o Facebook dovrai completare i dati della <strong>carta d'identità</strong>: l'account social non verifica l'identità.</p>
             </div>
-            <p className="login-note">Ambiente dimostrativo: nessuna credenziale reale viene richiesta o trasmessa. In produzione il flusso userà gli Identity Provider accreditati AgID.</p>
+            <p className="login-note">Ambiente dimostrativo: nessuna credenziale reale viene richiesta o trasmessa. In produzione SPID/CIE useranno gli IdP accreditati AgID e i social il protocollo OAuth.</p>
+          </div>
+        </div>
+      )}
+
+      {/* COMPLETAMENTO CARTA D'IDENTITÀ (dopo accesso social) */}
+      {idCardOpen && (
+        <div className="modal" role="dialog" aria-modal="true" aria-labelledby="idTitle" onClick={(e) => { if (e.target === e.currentTarget) { authLogout(); } }}>
+          <div className="modal-card modal-wide">
+            <button className="modal-close" type="button" aria-label="Chiudi e annulla accesso" onClick={() => authLogout()}>✕</button>
+            <p className="kicker">Verifica la tua identità</p>
+            <h2 id="idTitle">Completa i dati della carta d'identità</h2>
+            <p className="login-note">Hai effettuato l'accesso con un account social: per usare il portale servono i dati della tua carta d'identità.</p>
+            <form onSubmit={submitIdCard}>
+              <IdentityFields data={idCardData} set={setIdCard} />
+              {idCardMsg && <p className="form-message">{idCardMsg}</p>}
+              <div className="wizard-nav">
+                <button className="button button-ghost dark" type="button" onClick={() => authLogout()}>Annulla</button>
+                <button className="button button-primary" type="submit">Conferma identità</button>
+              </div>
+            </form>
           </div>
         </div>
       )}
@@ -599,8 +743,8 @@ export default function Portal() {
             <div>
               <h3>Informazioni</h3>
               <a href="#home">Come funziona</a>
-              <a href="#segnala">Accessibilità</a>
-              <a href="#traccia">Privacy e trattamento dati</a>
+              <a href="#faq">Domande frequenti</a>
+              <a href="#contatti">Accessibilità e privacy</a>
               <a href="#fascicolo">Area operatori</a>
             </div>
           </nav>
