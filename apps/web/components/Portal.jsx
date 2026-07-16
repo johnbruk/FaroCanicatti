@@ -330,6 +330,16 @@ export default function Portal() {
             <li><span className="howto-num">2</span><strong>Descrivi e localizza</strong><p>Scegli la categoria, aggiungi foto e indica il punto preciso sulla mappa o con la geolocalizzazione.</p></li>
             <li><span className="howto-num">3</span><strong>Segui la pratica</strong><p>Ricevi un codice pratica e controlla lo stato di avanzamento fino alla risoluzione.</p></li>
           </ol>
+          <div className="howto-note">
+            <div className="note-card">
+              <strong>⏱️ Tempi di risposta</strong>
+              <p>Le segnalazioni sono prese in carico entro pochi giorni lavorativi. Riceverai gli aggiornamenti sullo stato della tua pratica.</p>
+            </div>
+            <div className="note-card note-warn">
+              <strong>🚨 In caso di emergenza</strong>
+              <p>Per pericoli immediati per persone o cose non usare il portale: chiama il <strong>112</strong> (Numero Unico Emergenze).</p>
+            </div>
+          </div>
         </section>
 
         {/* WIZARD */}
@@ -490,6 +500,11 @@ export default function Portal() {
             <h2 id="map-title">Le segnalazioni della città.</h2>
             <p>Una panoramica delle pratiche aperte per categoria. La mappa interattiva georeferenziata arriverà con l'integrazione PostGIS.</p>
           </div>
+          <div className="status-legend" aria-label="Legenda degli stati">
+            <span className="badge ricevuta">Ricevuta</span>
+            <span className="badge in-lavorazione">In lavorazione</span>
+            <span className="badge risolta">Risolta</span>
+          </div>
           <div className="city-board" aria-live="polite">
             {board.length ? board.map(([cat, list]) => {
               const cfg = CATEGORIES.find((c) => c.label === cat) || { icon: '📌' };
@@ -601,6 +616,43 @@ export default function Portal() {
             )) : <p className="empty-state">Nessuna segnalazione corrisponde al filtro selezionato.</p>}
           </div>
         </section>
+
+        {/* FAQ */}
+        <section id="faq" className="section faq-section" aria-labelledby="faq-title">
+          <div className="section-heading">
+            <p className="kicker">Domande frequenti</p>
+            <h2 id="faq-title">Hai bisogno di aiuto?</h2>
+          </div>
+          <div className="faq-list">
+            <details><summary>Chi può inviare una segnalazione?</summary><p>Tutti i cittadini. Con SPID o CIE la segnalazione è firmata e la ritrovi nel tuo fascicolo; senza, puoi inviarla inserendo i tuoi dati.</p></details>
+            <details><summary>Cosa posso segnalare?</summary><p>Disservizi e anomalie su strade, rifiuti, illuminazione, verde, arredo urbano, segnaletica, veicoli abbandonati, cimiteri, acqua e fognature.</p></details>
+            <details><summary>Cosa NON va segnalato qui?</summary><p>Emergenze e pericoli immediati: in quei casi chiama il <strong>112</strong>. Il portale non sostituisce i numeri di emergenza.</p></details>
+            <details><summary>Come seguo la mia segnalazione?</summary><p>Ricevi un codice pratica (es. FARO-2026-001). Puoi controllare lo stato nella sezione <a href="#traccia">Traccia pratica</a> o nel tuo fascicolo se hai effettuato l'accesso.</p></details>
+            <details><summary>I miei dati sono al sicuro?</summary><p>I dati sono trattati solo per la gestione della segnalazione, secondo il GDPR. In questa versione dimostrativa restano sul tuo dispositivo.</p></details>
+          </div>
+        </section>
+
+        {/* CONTATTI / ISTITUZIONALE */}
+        <section id="contatti" className="section info-section" aria-labelledby="info-title">
+          <div className="section-heading">
+            <p className="kicker">Informazioni</p>
+            <h2 id="info-title">Contatti e trasparenza</h2>
+          </div>
+          <div className="info-grid">
+            <article className="info-card">
+              <h3>📞 URP — Il Faro</h3>
+              <p>Ufficio Relazioni con il Pubblico del Comune di Canicattì. Per assistenza sull'uso del portale e sullo stato delle pratiche.</p>
+            </article>
+            <article className="info-card">
+              <h3>♿ Accessibilità</h3>
+              <p>Il portale è progettato secondo le linee guida di accessibilità (WCAG 2.1 AA): navigazione da tastiera, contrasti adeguati, testi leggibili.</p>
+            </article>
+            <article className="info-card">
+              <h3>🔒 Privacy</h3>
+              <p>I dati personali sono trattati ai sensi del Regolamento UE 2016/679 (GDPR) esclusivamente per la gestione delle segnalazioni.</p>
+            </article>
+          </div>
+        </section>
       </main>
 
       {/* LOGIN MODAL */}
@@ -690,8 +742,8 @@ export default function Portal() {
             <div>
               <h3>Informazioni</h3>
               <a href="#home">Come funziona</a>
-              <a href="#segnala">Accessibilità</a>
-              <a href="#traccia">Privacy e trattamento dati</a>
+              <a href="#faq">Domande frequenti</a>
+              <a href="#contatti">Accessibilità e privacy</a>
               <a href="#fascicolo">Area operatori</a>
             </div>
           </nav>

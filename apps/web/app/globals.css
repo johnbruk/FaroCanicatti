@@ -122,6 +122,29 @@ h3 { font-size: 1.12rem; font-weight: 700; }
 .howto-num { display: inline-grid; place-content: center; width: 38px; height: 38px; border-radius: 50%; background: var(--red); color: #fff; font-weight: 800; margin-bottom: .7rem; }
 .howto-grid strong { display: block; font-size: 1.1rem; margin-bottom: .3rem; }
 .howto-grid p { margin: 0; color: var(--muted); font-size: .96rem; }
+.howto-note { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.2rem; }
+.note-card { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--spid); border-radius: var(--radius); padding: 1rem 1.2rem; }
+.note-card strong { display: block; margin-bottom: .3rem; }
+.note-card p { margin: 0; color: var(--muted); font-size: .95rem; }
+.note-warn { border-left-color: var(--red); }
+
+/* legenda stati */
+.status-legend { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+
+/* FAQ */
+.faq-list { display: grid; gap: .6rem; max-width: 820px; }
+.faq-list details { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 1.1rem; }
+.faq-list summary { cursor: pointer; font-weight: 700; padding: 1rem 0; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary::after { content: "+"; color: var(--red); font-weight: 800; font-size: 1.3rem; line-height: 1; }
+.faq-list details[open] summary::after { content: "\2013"; }
+.faq-list details p { margin: 0 0 1rem; color: var(--muted); }
+
+/* informazioni / contatti */
+.info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.info-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.3rem; }
+.info-card h3 { margin: 0 0 .5rem; }
+.info-card p { margin: 0; color: var(--muted); font-size: .95rem; }
 
 /* ---------------------------------------------------------------- wizard */
 .report-panel { background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--line); margin-top: 1rem; margin-bottom: 1rem; }
@@ -329,6 +352,8 @@ textarea { min-height: 130px; resize: vertical; }
   .report-card { grid-template-columns: 1fr; }
   .summary { grid-template-columns: 1fr; }
   .footer-top { grid-template-columns: 1fr; }
+  .howto-note { grid-template-columns: 1fr; }
+  .info-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
   body { padding-bottom: 76px; }
