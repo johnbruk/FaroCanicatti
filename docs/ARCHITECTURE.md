@@ -34,6 +34,30 @@ index.html, src/*.js/css   ──►   server/ (Express)   ──►   PostgreSQ
 3. **SPID/CIE reale**: accreditamento AgID + flusso SAML (sostituisce la sessione simulata).
 4. **Allegati**: object storage S3-compatibile con URL firmati per le foto.
 
+## Identità e livelli di accesso
+
+Il portale distingue tre livelli di identità, con implicazioni diverse.
+
+| Accesso | Verifica | Dati richiesti | Fiducia |
+|---|---|---|---|
+| **SPID / CIE** | Verificata dallo Stato (SAML/AgID) | Nessuno: anagrafica e codice fiscale dall'IdP | Alta |
+| **Social** (Google/Apple/Facebook) | Solo account, non l'identità | Obbligatori i dati della carta d'identità | Media |
+| **Ospite** | Nessuna | Anagrafica completa nel form | Base |
+
+**Cosa comporta SPID/CIE in produzione:**
+
+- Backend accreditato AgID che implementa **SAML 2.0** (metadata, `AuthnRequest`
+  firmata, verifica dell'`assertion`) e la registrazione come Service Provider.
+- Gli attributi (spidCode, nome, cognome, codice fiscale, email) arrivano
+  firmati dall'Identity Provider: **nessun inserimento manuale**.
+- Livelli SPID (1/2/3) e CIE livello 3; per le segnalazioni è sufficiente il livello 2.
+
+**Accesso social:** OAuth 2.0 / OpenID Connect autentica solo l'account, non
+l'identità reale. Il portale quindi **obbliga a inserire i dati della carta
+d'identità** (numero, anagrafica, residenza, telefono, email, PEC facoltativa)
+→ identità "dichiarata". Il flag `verified` sulla tabella `users` distingue i
+due livelli.
+
 ## Obiettivi
 
 - Gestire registrazione e autenticazione degli utenti con ruoli differenziati.

@@ -9,14 +9,27 @@ CREATE TABLE IF NOT EXISTS categories (
   subs        text[] NOT NULL DEFAULT '{}'
 );
 
--- Utenti autenticati via SPID/CIE. La chiave è il codice fiscale.
+-- Cittadini autenticati. Livelli di identità:
+--   verified = true  → SPID/CIE (identità garantita dallo Stato)
+--   verified = false → accesso social (Google/Apple/Facebook) con dati carta
+--                      d'identità dichiarati dall'utente, oppure ospite.
 CREATE TABLE IF NOT EXISTS users (
-  id           text PRIMARY KEY,          -- codice fiscale
-  display_name text NOT NULL,
-  email        text,
-  method       text,                       -- 'spid' | 'cie'
-  provider     text,
-  created_at   timestamptz NOT NULL DEFAULT now()
+  id             text PRIMARY KEY,          -- codice fiscale (SPID/CIE) o id social/ospite
+  auth_method    text,                       -- spid | cie | google | apple | facebook | guest
+  verified       boolean NOT NULL DEFAULT false,
+  provider       text,                       -- IdP SPID o provider social
+  display_name   text NOT NULL,
+  first_name     text,
+  last_name      text,
+  fiscal_number  text,                       -- codice fiscale (da SPID/CIE)
+  id_card_number text,                       -- numero carta d'identità (accesso social/ospite)
+  address        text,                       -- via e civico di residenza
+  city           text,
+  cap            text,
+  phone          text,
+  email          text,
+  pec            text,                        -- facoltativa
+  created_at     timestamptz NOT NULL DEFAULT now()
 );
 
 -- Segnalazioni (pratiche).
