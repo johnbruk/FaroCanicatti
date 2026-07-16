@@ -8,7 +8,8 @@
     "start": "node index.js",
     "migrate": "node migrate.js",
     "seed": "node seed.js",
-    "setup": "node migrate.js && node seed.js"
+    "setup": "node migrate.js && node seed.js",
+    "test": "node test.mjs"
   },
   "dependencies": {
     "dotenv": "^16.4.5",
