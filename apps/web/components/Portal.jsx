@@ -660,32 +660,36 @@ export default function Portal() {
             <p className="kicker">Accesso al portale</p>
             <h2 id="loginTitle">Entra con la tua identità digitale</h2>
             <div className="login-methods">
-              <button className="login-method spid" type="button" onClick={() => setIdpOpen((v) => !v)}>
-                <span className="lm-title"><span className="spid-glyph" aria-hidden="true">✦</span> Entra con SPID</span>
-                <span className="lm-desc">Sistema Pubblico di Identità Digitale</span>
+              <button className="spid-official" type="button" onClick={() => setIdpOpen((v) => !v)} aria-expanded={idpOpen}>
+                <img className="spid-ico" src={asset('/icons/spid/spid-ico.svg')} alt="" />
+                <span>Entra con SPID</span>
+                <span className="spid-caret" aria-hidden="true">{idpOpen ? '▲' : '▼'}</span>
               </button>
               {idpOpen && (
-                <div className="idp-list">
+                <div className="idp-list" role="menu" aria-label="Scegli il tuo gestore SPID">
                   {SPID_PROVIDERS.map((p) => (
-                    <button key={p.id} className="idp" type="button" onClick={() => doLogin('spid', p.id)}>
-                      <span className="idp-mark">{p.mark}</span>{p.name}
+                    <button key={p.id} className="idp" type="button" onClick={() => doLogin('spid', p.id)} title={`Entra con ${p.name}`}>
+                      <img src={asset(`/icons/spid/${p.id}.svg`)} alt={p.name} />
                     </button>
                   ))}
                 </div>
               )}
-              <button className="login-method cie" type="button" onClick={() => doLogin('cie')}>
-                <span className="lm-title">🪪 Entra con CIE</span>
-                <span className="lm-desc">Carta di Identità Elettronica</span>
+              <button className="cie-official" type="button" onClick={() => doLogin('cie')}>
+                <span className="cie-badge" aria-hidden="true">Cie<b>ID</b></span>
+                <span>Entra con CIE</span>
               </button>
-              <div className="login-divider"><span>oppure accedi con</span></div>
-              <div className="social-list">
+
+              <div className="login-divider"><span>oppure</span></div>
+
+              <div className="social-official-list">
                 {SOCIAL_PROVIDERS.map((p) => (
-                  <button key={p.id} className={`social-btn social-${p.id}`} type="button" onClick={() => doLogin(p.id)}>
-                    <span className="social-mark" aria-hidden="true">{p.mark || p.name[0]}</span> {p.name}
+                  <button key={p.id} className={`social-official ${p.id}`} type="button" onClick={() => doLogin(p.id)}>
+                    <img src={asset(`/icons/social/${p.id}.svg`)} alt="" />
+                    <span>Continua con {p.name}</span>
                   </button>
                 ))}
               </div>
-              <p className="social-note">⚠️ Con Apple, Google o Facebook dovrai completare i dati della <strong>carta d'identità</strong>: l'account social non verifica l'identità.</p>
+              <p className="social-note">⚠️ Con Google, Apple o Facebook dovrai completare i dati della <strong>carta d'identità</strong>: l'account social non verifica l'identità.</p>
             </div>
             <p className="login-note">Ambiente dimostrativo: nessuna credenziale reale viene richiesta o trasmessa. In produzione SPID/CIE useranno gli IdP accreditati AgID e i social il protocollo OAuth.</p>
           </div>

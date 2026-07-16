@@ -284,16 +284,21 @@ textarea { min-height: 130px; resize: vertical; }
 .modal-card { background: var(--paper); border-radius: var(--radius-lg); padding: 2rem; max-width: 460px; width: 100%; position: relative; box-shadow: 0 30px 80px rgba(0,0,0,.3); }
 .modal-card.is-loading { opacity: .6; pointer-events: none; }
 .modal-close { position: absolute; top: 1rem; right: 1rem; border: 0; background: var(--surface-2); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 1rem; color: var(--muted); }
-.login-methods { display: grid; gap: .7rem; margin: 1.2rem 0; }
-.login-method { text-align: left; border: 1.5px solid var(--line-strong); background: var(--paper); border-radius: 12px; padding: 1rem; cursor: pointer; display: grid; gap: .2rem; }
-.login-method:hover { border-color: var(--spid); }
-.login-method.cie:hover { border-color: var(--red); }
-.lm-title { font-weight: 800; font-size: 1.05rem; }
-.lm-desc { color: var(--muted); font-size: .85rem; }
-.idp-list { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; padding: .3rem; }
-.idp { display: flex; align-items: center; gap: .5rem; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: .6rem; cursor: pointer; font-weight: 600; font-size: .85rem; text-align: left; }
-.idp:hover { border-color: var(--spid); background: #fff; }
-.idp-mark { display: inline-grid; place-content: center; width: 26px; height: 26px; border-radius: 6px; background: var(--spid); color: #fff; font-weight: 800; font-size: .72rem; }
+.login-methods { display: grid; gap: .6rem; margin: 1.2rem 0; }
+/* Bottone SPID ufficiale (blu AgID) */
+.spid-official { width: 100%; display: flex; align-items: center; gap: .6rem; background: #06c; color: #fff; border: 0; border-radius: 6px; padding: .6rem .9rem; font-weight: 700; font-size: 1rem; cursor: pointer; min-height: 52px; }
+.spid-official:hover { background: #0053a6; }
+.spid-official .spid-ico { height: 30px; width: 30px; background: #fff; border-radius: 4px; padding: 3px; box-sizing: border-box; }
+.spid-official .spid-caret { margin-left: auto; font-size: .62rem; opacity: .9; }
+.idp-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: .5rem; padding: .6rem; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.idp { display: flex; align-items: center; justify-content: center; height: 54px; background: #fff; border: 1px solid var(--line-strong); border-radius: 8px; cursor: pointer; padding: .5rem .7rem; }
+.idp:hover { border-color: #06c; box-shadow: 0 0 0 2px rgba(0,102,204,.15); }
+.idp img { max-height: 30px; max-width: 100%; object-fit: contain; }
+/* Bottone CIE ufficiale */
+.cie-official { width: 100%; display: flex; align-items: center; gap: .6rem; background: #0b3d91; color: #fff; border: 0; border-radius: 6px; padding: .6rem .9rem; font-weight: 700; font-size: 1rem; cursor: pointer; min-height: 52px; }
+.cie-official:hover { background: #082f70; }
+.cie-badge { background: #fff; color: #0b3d91; font-weight: 800; border-radius: 4px; padding: .18rem .4rem; font-size: .82rem; letter-spacing: -.02em; }
+.cie-badge b { color: #e30613; }
 
 /* hero centrato con logo in alto */
 .hero-centered { grid-template-columns: 1fr; text-align: center; justify-items: center; max-width: 820px; }
@@ -307,13 +312,17 @@ textarea { min-height: 130px; resize: vertical; }
 /* accesso social + separatore */
 .login-divider { display: flex; align-items: center; gap: .8rem; color: var(--muted); font-size: .8rem; margin: .4rem 0; text-transform: uppercase; letter-spacing: .04em; }
 .login-divider::before, .login-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
-.social-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
-.social-btn { display: flex; align-items: center; justify-content: center; gap: .45rem; border: 1.5px solid var(--line-strong); background: var(--paper); border-radius: 10px; padding: .7rem .4rem; font-weight: 700; cursor: pointer; font-size: .9rem; min-height: 48px; }
-.social-btn:hover { border-color: var(--ink); }
-.social-mark { display: inline-grid; place-content: center; width: 22px; height: 22px; border-radius: 50%; font-weight: 900; color: #fff; font-size: .8rem; }
-.social-google .social-mark { background: #4285f4; }
-.social-apple .social-mark { background: #000; }
-.social-facebook .social-mark { background: #1877f2; }
+/* Bottoni social ufficiali (linee guida dei brand) */
+.social-official-list { display: grid; gap: .5rem; }
+.social-official { display: flex; align-items: center; justify-content: center; gap: .6rem; width: 100%; min-height: 50px; border-radius: 8px; font-weight: 600; font-size: .98rem; cursor: pointer; border: 1px solid var(--line-strong); background: #fff; color: #3c4043; }
+.social-official img { height: 20px; width: 20px; }
+.social-official.google:hover { background: #f7f8f8; }
+.social-official.apple { background: #000; color: #fff; border-color: #000; }
+.social-official.apple img { filter: invert(1); }
+.social-official.apple:hover { background: #1a1a1a; }
+.social-official.facebook { background: #0866ff; color: #fff; border-color: #0866ff; }
+.social-official.facebook img { filter: brightness(0) invert(1); }
+.social-official.facebook:hover { background: #0757d6; }
 .social-note { color: var(--warn); font-size: .82rem; margin: .2rem 0 0; }
 
 /* form anagrafica (ospite / carta d'identità) */
@@ -380,7 +389,8 @@ textarea { min-height: 130px; resize: vertical; }
   label { font-size: .8rem; }
   .identity-form { gap: 1rem; }
   .wizard-nav .button { font-size: 1.05rem; }
-  .social-btn { font-size: .82rem; padding: .7rem .3rem; }
+  .social-official { font-size: .92rem; }
+  .idp img { max-height: 26px; }
   .spid-label { display: none; }
   .button-spid { padding: .6rem .8rem; font-size: .9rem; }
   .user-name { max-width: 90px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

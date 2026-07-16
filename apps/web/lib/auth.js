@@ -20,14 +20,16 @@ const SESSION_KEY = 'faro-canicatti-session';
 
 // Identity Provider SPID accreditati AgID (nella demo servono alla schermata IdP).
 export const SPID_PROVIDERS = [
-  { id: 'poste', name: 'Poste ID', mark: 'P' },
-  { id: 'aruba', name: 'Aruba ID', mark: 'A' },
-  { id: 'infocert', name: 'InfoCert ID', mark: 'I' },
-  { id: 'lepida', name: 'Lepida ID', mark: 'L' },
-  { id: 'namirial', name: 'Namirial ID', mark: 'N' },
-  { id: 'sielte', name: 'Sielte ID', mark: 'S' },
-  { id: 'tim', name: 'TIM id', mark: 'T' },
-  { id: 'teamsystem', name: 'TeamSystem ID', mark: 'TS' }
+  { id: 'poste', name: 'Poste ID' },
+  { id: 'aruba', name: 'Aruba ID' },
+  { id: 'lepida', name: 'Lepida ID' },
+  { id: 'infocert', name: 'InfoCert ID' },
+  { id: 'intesa', name: 'Intesa ID' },
+  { id: 'namirial', name: 'Namirial ID' },
+  { id: 'sielte', name: 'Sielte ID' },
+  { id: 'spiditalia', name: 'SpidItalia' },
+  { id: 'tim', name: 'TIM id' },
+  { id: 'teamsystem', name: 'TeamSystem ID' }
 ];
 
 // Accesso alternativo tramite social (identità da completare con la carta).
