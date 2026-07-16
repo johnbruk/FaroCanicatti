@@ -67,8 +67,8 @@ h3 { font-size: 1.12rem; font-weight: 700; }
 }
 .cc-brand { display: inline-flex; gap: .7rem; align-items: center; }
 .cc-brand:hover { text-decoration: none; }
-.cc-brand img { width: 48px; height: 48px; border-radius: 50%; box-shadow: var(--shadow-sm); }
-.cc-brand strong { display: block; color: var(--ink); font-size: 1.15rem; font-weight: 800; line-height: 1; letter-spacing: -.01em; }
+.cc-brand img { width: 64px; height: 64px; border-radius: 50%; box-shadow: var(--shadow-sm); }
+.cc-brand strong { display: block; color: var(--ink); font-size: 1.35rem; font-weight: 800; line-height: 1; letter-spacing: -.01em; }
 .cc-brand small { display: block; color: var(--muted); font-weight: 700; text-transform: uppercase; font-size: .66rem; letter-spacing: .06em; margin-top: .2rem; }
 .cc-menu { display: none; border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink); border-radius: 12px; padding: .5rem .7rem; font-size: 1.2rem; cursor: pointer; }
 .cc-nav { justify-self: end; display: flex; gap: .3rem; align-items: center; font-weight: 600; }

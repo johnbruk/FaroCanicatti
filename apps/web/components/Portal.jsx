@@ -274,7 +274,7 @@ export default function Portal() {
 
       <header className="cc-header">
         <a className="cc-brand" href="#home" aria-label="Il Faro 1 di Canicattì — Controcorrente">
-          <img src={asset('/icons/logo02.png')} alt="" width="48" height="48" />
+          <img src={asset('/icons/logo02.png')} alt="" width="64" height="64" />
           <span><strong>Il Faro 1</strong><small>di Canicattì • Controcorrente</small></span>
         </a>
         <button className="cc-menu" type="button" aria-label="Apri menu" aria-expanded={navOpen}
