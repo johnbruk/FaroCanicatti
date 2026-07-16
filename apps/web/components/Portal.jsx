@@ -84,6 +84,7 @@ export default function Portal() {
   const [guestData, setGuestData] = useState(IDENTITY_EMPTY);
   const [privacy, setPrivacy] = useState(false);
   const [formMsg, setFormMsg] = useState('');
+  const [formOk, setFormOk] = useState(false);
   const setGuest = (k, v) => setGuestData((p) => ({ ...p, [k]: v }));
 
   const [loginOpen, setLoginOpen] = useState(false);
@@ -183,7 +184,7 @@ export default function Portal() {
   }
 
   function validateStep(n) {
-    setFormMsg('');
+    setFormMsg(''); setFormOk(false);
     if (n === 1 && !category) { setFormMsg('Seleziona una categoria per continuare.'); return false; }
     if (n === 2 && address.trim().length < 4) { setFormMsg('Indica un indirizzo o usa la geolocalizzazione.'); return false; }
     if (n === 3 && description.trim().length < 20) { setFormMsg('La descrizione deve avere almeno 20 caratteri.'); return false; }
@@ -216,7 +217,7 @@ export default function Portal() {
     };
     try {
       const report = await store.createReport(data);
-      setFormMsg(`✅ Segnalazione inviata. Codice pratica: ${report.id}`);
+      setFormMsg(`✅ Segnalazione inviata. Codice pratica: ${report.id}`); setFormOk(true);
       // reset
       setCategory(''); setCategoryId(''); setSubcategory(''); setAddress(''); setCoords(null);
       setMapQuery(''); setGeoLabel('📍 Usa la mia posizione'); setDescription(''); setPriority('Ordinaria');
@@ -224,7 +225,7 @@ export default function Portal() {
       setStep(1);
       await refresh();
     } catch (err) {
-      setFormMsg(`Errore nell'invio: ${err.message}`);
+      setFormMsg(`Errore nell'invio: ${err.message}`); setFormOk(false);
     }
   }
 
@@ -277,27 +278,27 @@ export default function Portal() {
           <img src={asset('/icons/logo02.png')} alt="" width="64" height="64" />
           <span><strong>Il Faro 1</strong><small>di Canicattì • Controcorrente</small></span>
         </a>
-        <button className="cc-menu" type="button" aria-label="Apri menu" aria-expanded={navOpen}
-          onClick={() => setNavOpen((v) => !v)}>☰</button>
         <nav className={`cc-nav${navOpen ? ' open' : ''}`} aria-label="Navigazione principale" onClick={() => setNavOpen(false)}>
           <a href="#segnala">Segnala</a>
           <a href="#mappa">Mappa</a>
           <a href="#pratiche">Le mie segnalazioni</a>
           <a href="#traccia">Traccia pratica</a>
-          <div className="cc-auth">
-            {session ? (
-              <div className="user-chip">
-                <span className="user-avatar" aria-hidden="true">{session.name[0]}{session.familyName[0]}</span>
-                <span className="user-name">{session.displayName}</span>
-                <button className="user-logout" type="button" onClick={() => authLogout()} aria-label="Esci">Esci</button>
-              </div>
-            ) : (
-              <button className="button button-spid" type="button" onClick={openLogin}>
-                <span className="spid-glyph" aria-hidden="true">✦</span> Accedi con SPID / CIE
-              </button>
-            )}
-          </div>
         </nav>
+        <div className="cc-auth">
+          {session ? (
+            <div className="user-chip">
+              <span className="user-avatar" aria-hidden="true">{session.name[0]}{session.familyName[0]}</span>
+              <span className="user-name">{session.displayName}</span>
+              <button className="user-logout" type="button" onClick={() => authLogout()} aria-label="Esci">Esci</button>
+            </div>
+          ) : (
+            <button className="button button-spid" type="button" onClick={openLogin}>
+              <span className="spid-glyph" aria-hidden="true">✦</span> Accedi<span className="spid-label"> con SPID / CIE</span>
+            </button>
+          )}
+        </div>
+        <button className="cc-menu" type="button" aria-label="Apri menu" aria-expanded={navOpen}
+          onClick={() => setNavOpen((v) => !v)}>☰</button>
       </header>
 
       <main id="home">
@@ -490,7 +491,7 @@ export default function Portal() {
               {step === 5 && <button className="button button-primary" type="submit">Invia segnalazione</button>}
             </div>
           </form>
-          {formMsg && <p className="form-message" role="status">{formMsg}</p>}
+          {formMsg && <p className={`form-message${formOk ? ' is-ok' : ''}`} role="status">{formMsg}</p>}
         </section>
 
         {/* MAPPA / BOARD */}
