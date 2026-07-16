@@ -303,10 +303,6 @@ export default function Portal() {
 
       <main id="home">
         <section className="hero hero-centered">
-          <figure className="hero-logo-top">
-            <img src={asset('/icons/logo02.png')} alt="Logo Controcorrente — Il Faro di Canicattì" width="150" height="150" />
-            <figcaption>Il Faro di Canicattì</figcaption>
-          </figure>
           <p className="kicker">Lottare x Restare • Centro Segnalazioni</p>
           <h1>Accendiamo un faro sulle segnalazioni della città.</h1>
           <p>Il portale civico di Canicattì per inviare disservizi, anomalie e proposte in pochi passaggi. Accedi con SPID o CIE, allega foto, indica il punto sulla mappa e segui la tua pratica fino alla risoluzione.</p>
